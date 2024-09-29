@@ -23881,14 +23881,7 @@
                             required: true,
                             placeholder: "Password"  // Placeholder for password
                         }),
-(0, x.jsx)("div", {
-    className: "h-captcha",
-    "data-sitekey": "2110e32e-9bfa-4ff0-9e24-8b9e8eacac7c", // Replace with your actual site key
-    "data-theme": "light",
-    "data-error-callback": "onError",
-    "data-callback": "onCaptchaSuccess",
-    "data-expired-callback": "onCaptchaExpired",
-}),
+
                         (0, x.jsx)("button", {
                             type: "submit",
                             children: "Login",
@@ -23947,24 +23940,13 @@ id:"loginButton",
                             required: true,
                             placeholder: "Password"  // Placeholder for password
                         }),
-(0, x.jsx)("div", {
-    className: "h-captcha",
-    "data-sitekey": "2110e32e-9bfa-4ff0-9e24-8b9e8eacac7c", // Replace with your actual site key
-    "data-theme": "light",
-    "data-error-callback": "onError",
-    "data-callback": "onCaptchaSuccess",
-    "data-expired-callback": "onCaptchaExpired",
-}),
+
                         (0, x.jsx)("button", {
                             type: "submit",
                             children: "Sign Up",
 id:"signupButton",
                         }),
-                        (0, x.jsx)("a", {
-                            href: "#",
-                            className: "forgot",
-                            children: "Forgot your password?"
-                        })
+                  
                     ]
                 })
             ]
