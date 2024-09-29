@@ -1,0 +1,305 @@
+/* General body styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Container for buttons */
+.container {
+    text-align: center;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+margin: 8px
+}
+
+/* Style for general buttons */
+.btn {
+    padding: 10px 20px;
+    background-color: rgb(234, 179, 8); /* Yellow background */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: inline-block;
+}
+
+.btn:hover {
+    background-color: rgb(34, 197, 94); /* Green on hover */
+    transform: scale(1.05);
+}
+/* Profile button with circular image */
+.profile-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 100%;
+    background-image: url('profile.jfif');
+    background-size: cover;
+    background-position: center;
+    border: 2px solid #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+margin: 5px;
+}
+
+.profile-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Centered modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    width: 100%;
+    height: 100%;
+ background-color: #FF4433;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Modal content with different backgrounds */
+.modal-content, .profile-modal-content {
+background-color: #FBEBD8;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    transform: translateY(-30px);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    z-index: 1060;
+}
+
+.modal-content.show, .profile-modal-content.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Close button */
+.close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    color: grey;
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: #333;
+}
+
+/* Input fields */
+.modal-content input[type="text"],
+.modal-content input[type="email"],
+.modal-content input[type="password"],
+.profile-modal-content input[type="text"],
+.profile-modal-content input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin: 12px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-size: 15px;
+    background-color: #fff;
+}
+
+.modal-content input[type="text"]:focus,
+.modal-content input[type="email"]:focus,
+.modal-content input[type="password"]:focus,
+.profile-modal-content input[type="text"]:focus,
+.profile-modal-content input[type="password"]:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+/* Form labels */
+.modal-content label,
+.profile-modal-content label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 15px;
+    color: #555;
+    font-weight: bold;
+}
+
+/* Submit button */
+.modal-content button[type="submit"],
+.profile-modal-content button[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    background-color: #3155d3;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 10px;
+}
+
+.modal-content button[type="submit"]:hover,
+.profile-modal-content button[type="submit"]:hover {
+    background-color: #0c67a9;
+
+}
+
+/* Profile picture in modal */
+.profile-picture-large {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    margin: 20px auto; /* Center the profile image */
+    border: 4px solid #333;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Username and score in profile modal */
+.username {
+    font-size: 20px;
+    color: grey;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.score {
+    position: relative;
+    display: inline-block; /* Ensures the score and image are treated together */
+
+}
+
+.score-icon {
+    position: absolute;
+
+    width: 25px; /* Adjust width based on the size you need */
+    height: 25px; /* Adjust height accordingly */
+    z-index: 1; /* Image behind text */
+
+    }
+
+.score-number {
+    position: relative;
+    z-index: 2; /* Ensure text is on top of the image */
+    padding-left: 35px; /* Adjust this to position the text correctly over the image */
+    font-size: 25px; /* Adjust this value to make the score number bigger */
+    font-weight: bold; /* Optional: Make the score bold */
+    color: lime; /* Optional: Change color if needed */
+bottom: 7px;
+}
+
+
+
+/* Profile modal buttons */
+.reset-password-btn, .logout-btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.reset-password-btn {
+    background-color: #4b89ff;
+}
+
+.reset-password-btn:hover {
+    background-color: #0056ff;
+}
+
+.logout-btn {
+    background-color: #ff4b4b;
+}
+
+.logout-btn:hover {
+    background-color: #ff0000;
+}
+
+/* Message box for success and error messages */
+.message-box {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 25px;
+    background-color: #4caf50;
+    color: white;
+    font-weight: bold;
+    z-index: 2000;
+    border-radius: 8px;
+    opacity: 1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: opacity 1s ease-in-out, transform 0.3s ease;
+}
+
+.message-box.error {
+    background-color: #f44336;
+}
+
+.message-box.fade-out {
+    opacity: 0;
+    transform: translateY(-20px); /* Better transition effect */
+}
+
+/* Form structure inside the modal */
+.modal-content form, .profile-modal-content form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Padding between form elements */
+.modal-content form > *, .profile-modal-content form > * {
+    margin-bottom: 15px;
+
+}
+
+.my-image{
+width: 30px; 
+    height: 30px;
+margin-right: 0;
+
+}
+.forgot{
+color: black;
+
+}
+.forgot:hover{
+color: blue;
+}
+.ig-icon{
+ width: 40px;  /* Adjust size */
+    height: 40px;
+    fill: #ff3da5; /* Instagram-like color */
+    transition: transform 0.3s ease, fill 0.3s ease; /* Add hover effects */
+
+    /* Positioning styles if needed */
+  
+}
+.background-content { /* Wordle or any background content */
+    pointer-events: none; /* Disable all mouse/keyboard interaction */
+}
