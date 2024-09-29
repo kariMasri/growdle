@@ -12,12 +12,12 @@ body {
 /* Container for buttons */
 .container {
     text-align: center;
-    z-index: 1000;
+    z-index: 1;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
-margin: 8px
+    margin: 8px;
 }
 
 /* Style for general buttons */
@@ -37,6 +37,8 @@ margin: 8px
     background-color: rgb(34, 197, 94); /* Green on hover */
     transform: scale(1.05);
 }
+
+
 /* Profile button with circular image */
 .profile-btn {
     width: 45px;
@@ -49,7 +51,7 @@ margin: 8px
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     cursor: pointer;
     transition: transform 0.3s ease;
-margin: 5px;
+    margin: 5px;
 }
 
 .profile-btn:hover {
@@ -64,15 +66,14 @@ margin: 5px;
     top: 0;
     width: 100%;
     height: 100%;
- background-color: #FF4433;
-    display: flex;
+    background-color: #FF4433;     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 /* Modal content with different backgrounds */
 .modal-content, .profile-modal-content {
-background-color: #FBEBD8;
+    background-color: #FBEBD8;
     padding: 30px;
     border-radius: 12px;
     max-width: 400px;
@@ -160,7 +161,6 @@ background-color: #FBEBD8;
 .modal-content button[type="submit"]:hover,
 .profile-modal-content button[type="submit"]:hover {
     background-color: #0c67a9;
-
 }
 
 /* Profile picture in modal */
@@ -186,17 +186,14 @@ background-color: #FBEBD8;
 .score {
     position: relative;
     display: inline-block; /* Ensures the score and image are treated together */
-
 }
 
 .score-icon {
     position: absolute;
-
     width: 25px; /* Adjust width based on the size you need */
     height: 25px; /* Adjust height accordingly */
     z-index: 1; /* Image behind text */
-
-    }
+}
 
 .score-number {
     position: relative;
@@ -205,10 +202,8 @@ background-color: #FBEBD8;
     font-size: 25px; /* Adjust this value to make the score number bigger */
     font-weight: bold; /* Optional: Make the score bold */
     color: lime; /* Optional: Change color if needed */
-bottom: 7px;
+    bottom: 7px;
 }
-
-
 
 /* Profile modal buttons */
 .reset-password-btn, .logout-btn {
@@ -249,7 +244,7 @@ bottom: 7px;
     background-color: #4caf50;
     color: white;
     font-weight: bold;
-    z-index: 2000;
+    z-index: 9999;
     border-radius: 8px;
     opacity: 1;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -275,31 +270,28 @@ bottom: 7px;
 /* Padding between form elements */
 .modal-content form > *, .profile-modal-content form > * {
     margin-bottom: 15px;
-
 }
 
-.my-image{
-width: 30px; 
+/* Image styles */
+.my-image {
+    width: 30px;
     height: 30px;
-margin-right: 0;
+    margin-right: 0;
+}
 
+/* Forgot link styles */
+.forgot {
+    color: black;
 }
-.forgot{
-color: black;
 
+.forgot:hover {
+    color: blue;
 }
-.forgot:hover{
-color: blue;
-}
-.ig-icon{
- width: 40px;  /* Adjust size */
+
+/* Instagram icon styles */
+.ig-icon {
+    width: 40px; /* Adjust size */
     height: 40px;
     fill: #ff3da5; /* Instagram-like color */
     transition: transform 0.3s ease, fill 0.3s ease; /* Add hover effects */
-
-    /* Positioning styles if needed */
-  
-}
-.background-content { /* Wordle or any background content */
-    pointer-events: none; /* Disable all mouse/keyboard interaction */
 }
