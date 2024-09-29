@@ -1,34 +1,3 @@
-document.addEventListener("DOMContentLoaded", function () {
-    // Function to enable buttons
-    function enableButtons() {
-        const loginButton = document.getElementById('loginButton');
-        const signupButton = document.getElementById('signupButton');
-
-        if (loginButton) loginButton.disabled = false;
-        if (signupButton) signupButton.disabled = false;
-    }
-
-    // Function to disable buttons
-    function disableButtons() {
-        const loginButton = document.getElementById('loginButton');
-        const signupButton = document.getElementById('signupButton');
-
-        if (loginButton) loginButton.disabled = true;
-        if (signupButton) signupButton.disabled = true;
-    }
-
-    // hCaptcha callback function
-    window.onCaptchaSuccess = function (token) {
-        enableButtons(); // Enable the buttons when captcha is solved
-    };
-
-    window.onCaptchaExpired = function () {
-        disableButtons(); // Disable the buttons when captcha expires
-    };
-
-    // Initially disable the buttons
-    disableButtons();
-});
 
 document.addEventListener("DOMContentLoaded", function() {
 
