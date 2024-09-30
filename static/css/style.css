@@ -12,7 +12,7 @@ body {
 /* Container for buttons */
 .container {
     text-align: center;
-    z-index: 1000;
+    z-index: 1;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -38,16 +38,6 @@ body {
     transform: scale(1.05);
 }
 
-.btn.disabled {
-    background-color: gray;
-    color: white;
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-
-button:disabled {
-    pointer-events: none; /* Prevent interaction */
-}
 
 /* Profile button with circular image */
 .profile-btn {
@@ -76,8 +66,7 @@ button:disabled {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 68, 51, 0.8); /* Semi-transparent background */
-    display: flex;
+    background-color: #FF4433;     display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -255,7 +244,7 @@ button:disabled {
     background-color: #4caf50;
     color: white;
     font-weight: bold;
-    z-index: 2000;
+    z-index: 9999;
     border-radius: 8px;
     opacity: 1;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -305,9 +294,4 @@ button:disabled {
     height: 40px;
     fill: #ff3da5; /* Instagram-like color */
     transition: transform 0.3s ease, fill 0.3s ease; /* Add hover effects */
-}
-
-/* Background content styles (like Wordle or any other background content) */
-.background-content {
-    pointer-events: none; /* Disable all mouse/keyboard interaction */
 }
