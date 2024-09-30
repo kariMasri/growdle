@@ -103,6 +103,12 @@ function App() {
 
   const [stats, setStats] = useState(() => loadStats())
 
+  const [score, setScore] = useState<number>(() => {
+    // Get the score from localStorage or set to 0 if it doesn't exist
+    const storedScore = localStorage.getItem('score')
+    return storedScore ? parseInt(storedScore) : 0
+  })
+
   const [isHardMode, setIsHardMode] = useState(
     localStorage.getItem('gameMode')
       ? localStorage.getItem('gameMode') === 'hard'
@@ -110,14 +116,12 @@ function App() {
   )
 
   useEffect(() => {
-    // if no game state on load,
-    // show the user the how-to info modal
     if (!loadGameStateFromLocalStorage(true)) {
       setTimeout(() => {
         setIsInfoModalOpen(true)
       }, WELCOME_INFO_MODAL_MS)
     }
-  })
+  }, [])
 
   useEffect(() => {
     DISCOURAGE_INAPP_BROWSERS &&
@@ -175,6 +179,13 @@ function App() {
         WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
       const delayMs = REVEAL_TIME_MS * solution.length
 
+      // Increment score by 10 points
+      const newScore = score + 10
+      setScore(newScore)
+
+      // Save the updated score in localStorage
+      localStorage.setItem('score', newScore.toString())
+
       showSuccessAlert(winMessage, {
         delayMs,
         onClose: () => setIsStatsModalOpen(true),
@@ -186,7 +197,7 @@ function App() {
         setIsStatsModalOpen(true)
       }, (solution.length + 1) * REVEAL_TIME_MS)
     }
-  }, [isGameWon, isGameLost, showSuccessAlert])
+  }, [isGameWon, isGameLost, showSuccessAlert, score])
 
   const onChar = (value: string) => {
     if (
@@ -252,16 +263,10 @@ function App() {
       setCurrentGuess('')
 
       if (winningWord) {
-        if (isLatestGame) {
-          setStats(addStatsForCompletedGame(stats, guesses.length))
-        }
-        return setIsGameWon(true)
+        setIsGameWon(true)
       }
 
       if (guesses.length === MAX_CHALLENGES - 1) {
-        if (isLatestGame) {
-          setStats(addStatsForCompletedGame(stats, guesses.length + 1))
-        }
         setIsGameLost(true)
         showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
           persist: true,
@@ -360,6 +365,7 @@ function App() {
             handleHighContrastMode={handleHighContrastMode}
           />
           <AlertContainer />
+          <p>Your Score: {score}</p> {/* Display the score */}
         </div>
       </div>
     </Div100vh>
