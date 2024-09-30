@@ -1,11 +1,9 @@
 import './App.css'
-
 import { ClockIcon } from '@heroicons/react/outline'
 import { format } from 'date-fns'
 import { default as GraphemeSplitter } from 'grapheme-splitter'
 import { useEffect, useState } from 'react'
 import Div100vh from 'react-div-100vh'
-
 import { AlertContainer } from './components/alerts/AlertContainer'
 import { Grid } from './components/grid/Grid'
 import { Keyboard } from './components/keyboard/Keyboard'
@@ -57,12 +55,9 @@ import {
 function App() {
   const isLatestGame = getIsLatestGame()
   const gameDate = getGameDate()
-  const prefersDarkMode = window.matchMedia(
-    '(prefers-color-scheme: dark)'
-  ).matches
+  const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
 
-  const { showError: showErrorAlert, showSuccess: showSuccessAlert } =
-    useAlert()
+  const { showError: showErrorAlert, showSuccess: showSuccessAlert } = useAlert()
   const [currentGuess, setCurrentGuess] = useState('')
   const [isGameWon, setIsGameWon] = useState(false)
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false)
@@ -79,9 +74,7 @@ function App() {
       ? true
       : false
   )
-  const [isHighContrastMode, setIsHighContrastMode] = useState(
-    getStoredIsHighContrastMode()
-  )
+  const [isHighContrastMode, setIsHighContrastMode] = useState(getStoredIsHighContrastMode())
   const [isRevealing, setIsRevealing] = useState(false)
   const [guesses, setGuesses] = useState<string[]>(() => {
     const loaded = loadGameStateFromLocalStorage(isLatestGame)
@@ -102,6 +95,10 @@ function App() {
   })
 
   const [stats, setStats] = useState(() => loadStats())
+  const [score, setScore] = useState<number>(() => {
+    const storedScore = localStorage.getItem('score')
+    return storedScore ? parseInt(storedScore) : 0
+  })
 
   const [isHardMode, setIsHardMode] = useState(
     localStorage.getItem('gameMode')
@@ -110,14 +107,12 @@ function App() {
   )
 
   useEffect(() => {
-    // if no game state on load,
-    // show the user the how-to info modal
     if (!loadGameStateFromLocalStorage(true)) {
       setTimeout(() => {
         setIsInfoModalOpen(true)
       }, WELCOME_INFO_MODAL_MS)
     }
-  })
+  }, [])
 
   useEffect(() => {
     DISCOURAGE_INAPP_BROWSERS &&
@@ -175,28 +170,23 @@ function App() {
         WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
       const delayMs = REVEAL_TIME_MS * solution.length
 
-     function AddScoreComponent() {
-  // Initialize score, fetching from localStorage or setting it to 0
-  const [score, setScore] = useState<number>(() => {
-    const storedScore = localStorage.getItem('score');
-    return storedScore ? parseInt(storedScore) : 0;
-  });
+      // Add 10 points to the score
+      const newScore = score + 10
+      setScore(newScore)
+      localStorage.setItem('score', newScore.toString())
 
-  // Function to add 10 points to the score
-  const addScore = () => {
-    const newScore = score + 10; // Increment the score by 10
-    setScore(newScore); // Update state
-    localStorage.setItem('score', newScore.toString()); // Save to localStorage
-  };,
+      showSuccessAlert(winMessage, {
+        delayMs,
+        onClose: () => setIsStatsModalOpen(true),
       })
-    
+    }
 
     if (isGameLost) {
       setTimeout(() => {
         setIsStatsModalOpen(true)
       }, (solution.length + 1) * REVEAL_TIME_MS)
     }
-  }, [isGameWon, isGameLost, showSuccessAlert])
+  }, [isGameWon, isGameLost, showSuccessAlert, score])
 
   const onChar = (value: string) => {
     if (
@@ -245,8 +235,6 @@ function App() {
     }
 
     setIsRevealing(true)
-    // turn this back off after all
-    // chars have been revealed
     setTimeout(() => {
       setIsRevealing(false)
     }, REVEAL_TIME_MS * solution.length)
@@ -370,6 +358,7 @@ function App() {
             handleHighContrastMode={handleHighContrastMode}
           />
           <AlertContainer />
+          <p>Your Score: {score}</p> {/* Display the score */}
         </div>
       </div>
     </Div100vh>
