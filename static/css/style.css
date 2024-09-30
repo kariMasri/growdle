@@ -271,3 +271,21 @@ body {
 .background-content {
     pointer-events: none;
 }
+
+/* ----------------- Media Queries for Smaller Devices ------------------ */
+@media (max-width: 768px) {
+    /* Reduce side padding and margins */
+    .modal-content, .profile-modal-content {
+        padding: 3vh 3vw; /* Less padding for smaller screens */
+        max-width: 90vw; /* Use more width on smaller screens */
+        max-height: 85vh; /* Increase height usage on smaller screens */
+    }
+
+    .close {
+        font-size: 1.5rem; /* Smaller close button */
+    }
+
+    /* Adjust button padding and font size */
+    .btn, .reset-password-btn, .logout-btn {
+        padding: 1vh 1.5vw; /* Smaller padding */
+        font-size: 0.9rem;
