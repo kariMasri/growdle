@@ -3,13 +3,10 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    height: 100vh; /* Full height of the viewport */
-    width: 100vw;  /* Full width of the viewport */
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden; /* Prevent scrolling */
-    box-sizing: border-box;
 }
 
 /* Container for buttons */
@@ -19,19 +16,19 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 1vw; /* Gap based on viewport width */
-    margin: 1vh; /* Margin based on viewport height */
+    gap: 10px;
+    margin: 8px;
 }
 
 /* Style for general buttons */
 .btn {
-    padding: 1vh 2vw; /* Padding based on viewport units */
+    padding: 10px 20px;
     background-color: rgb(234, 179, 8); /* Yellow background */
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 1rem; /* Use rem for scalable font size */
+    font-size: 16px;
     transition: background-color 0.3s ease, transform 0.3s ease;
     display: inline-block;
 }
@@ -41,10 +38,21 @@ body {
     transform: scale(1.05);
 }
 
+.btn.disabled {
+    background-color: gray;
+    color: white;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+button:disabled {
+    pointer-events: none; /* Prevent interaction */
+}
+
 /* Profile button with circular image */
 .profile-btn {
-    width: 5vh; /* Scale with viewport height */
-    height: 5vh;
+    width: 45px;
+    height: 45px;
     border-radius: 100%;
     background-image: url('profile.jfif');
     background-size: cover;
@@ -53,7 +61,7 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     cursor: pointer;
     transition: transform 0.3s ease;
-    margin: 1vh;
+    margin: 5px;
 }
 
 .profile-btn:hover {
@@ -66,22 +74,21 @@ body {
     position: fixed;
     z-index: 9999;
     top: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 68, 51, 0.8); /* Semi-transparent background */
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden; /* Prevent modal from scrolling */
 }
 
 /* Modal content with different backgrounds */
 .modal-content, .profile-modal-content {
     background-color: #FBEBD8;
-    padding: 5vh 5vw; /* Scale with viewport */
+    padding: 30px;
     border-radius: 12px;
-    max-width: 80vw; /* Ensure modal doesn't exceed viewport width */
-    max-height: 80vh; /* Ensure modal doesn't exceed viewport height */
+    max-width: 400px;
+    width: 90%;
     text-align: center;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     transform: translateY(-30px);
@@ -98,9 +105,9 @@ body {
 /* Close button */
 .close {
     position: absolute;
-    top: 2vh;
-    right: 2vw;
-    font-size: 2rem; /* Adjust for responsiveness */
+    top: 15px;
+    right: 15px;
+    font-size: 20px;
     cursor: pointer;
     color: grey;
     transition: color 0.3s ease;
@@ -117,14 +124,14 @@ body {
 .profile-modal-content input[type="text"],
 .profile-modal-content input[type="password"] {
     width: 100%;
-    padding: 1.5vh 1.5vw;
-    margin: 1.5vh 0;
+    padding: 12px;
+    margin: 12px 0;
     border-radius: 8px;
     border: 1px solid #ccc;
-    font-size: 1rem;
-    background-color: #fff;
     box-sizing: border-box;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-size: 15px;
+    background-color: #fff;
 }
 
 .modal-content input[type="text"]:focus,
@@ -137,19 +144,29 @@ body {
     outline: none;
 }
 
+/* Form labels */
+.modal-content label,
+.profile-modal-content label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 15px;
+    color: #555;
+    font-weight: bold;
+}
+
 /* Submit button */
 .modal-content button[type="submit"],
 .profile-modal-content button[type="submit"] {
     width: 100%;
-    padding: 1.5vh;
+    padding: 14px;
     border: none;
     background-color: #3155d3;
     color: white;
-    font-size: 1rem;
+    font-size: 16px;
     cursor: pointer;
     border-radius: 8px;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    margin-top: 1vh;
+    margin-top: 10px;
 }
 
 .modal-content button[type="submit"]:hover,
@@ -159,56 +176,56 @@ body {
 
 /* Profile picture in modal */
 .profile-picture-large {
-    width: 15vh;
-    height: 15vh;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     background-size: cover;
     background-position: center;
-    margin: 2vh auto;
+    margin: 20px auto; /* Center the profile image */
     border: 4px solid #333;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Username and score in profile modal */
 .username {
-    font-size: 2rem;
+    font-size: 20px;
     color: grey;
-    margin-bottom: 1vh;
+    margin-bottom: 10px;
     font-weight: bold;
 }
 
 .score {
     position: relative;
-    display: inline-block;
+    display: inline-block; /* Ensures the score and image are treated together */
 }
 
 .score-icon {
     position: absolute;
-    width: 3vw;
-    height: 3vw;
-    z-index: 1;
+    width: 25px; /* Adjust width based on the size you need */
+    height: 25px; /* Adjust height accordingly */
+    z-index: 1; /* Image behind text */
 }
 
 .score-number {
     position: relative;
-    z-index: 2;
-    padding-left: 4vw;
-    font-size: 2rem;
-    font-weight: bold;
-    color: lime;
-    bottom: 0.5vh;
+    z-index: 2; /* Ensure text is on top of the image */
+    padding-left: 35px; /* Adjust this to position the text correctly over the image */
+    font-size: 25px; /* Adjust this value to make the score number bigger */
+    font-weight: bold; /* Optional: Make the score bold */
+    color: lime; /* Optional: Change color if needed */
+    bottom: 7px;
 }
 
 /* Profile modal buttons */
 .reset-password-btn, .logout-btn {
     width: 100%;
-    padding: 1.5vh;
-    margin-top: 1vh;
+    padding: 12px;
+    margin-top: 10px;
     color: white;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 16px;
     transition: background-color 0.3s ease;
 }
 
@@ -231,10 +248,10 @@ body {
 /* Message box for success and error messages */
 .message-box {
     position: fixed;
-    top: 2vh;
+    top: 20px;
     left: 50%;
     transform: translateX(-50%);
-    padding: 1.5vh 2vw;
+    padding: 12px 25px;
     background-color: #4caf50;
     color: white;
     font-weight: bold;
@@ -251,41 +268,46 @@ body {
 
 .message-box.fade-out {
     opacity: 0;
-    transform: translateY(-2vh);
+    transform: translateY(-20px); /* Better transition effect */
 }
 
-/* Instagram icon */
+/* Form structure inside the modal */
+.modal-content form, .profile-modal-content form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Padding between form elements */
+.modal-content form > *, .profile-modal-content form > * {
+    margin-bottom: 15px;
+}
+
+/* Image styles */
+.my-image {
+    width: 30px;
+    height: 30px;
+    margin-right: 0;
+}
+
+/* Forgot link styles */
+.forgot {
+    color: black;
+}
+
+.forgot:hover {
+    color: blue;
+}
+
+/* Instagram icon styles */
 .ig-icon {
-    width: 4vw;
-    height: 4vw;
-    fill: #ff3da5;
-    transition: transform 0.3s ease, fill 0.3s ease;
+    width: 40px; /* Adjust size */
+    height: 40px;
+    fill: #ff3da5; /* Instagram-like color */
+    transition: transform 0.3s ease, fill 0.3s ease; /* Add hover effects */
 }
 
-.ig-icon:hover {
-    fill: #e1306c;
-    transform: scale(1.1);
-}
-
-/* Background content (like Wordle) */
+/* Background content styles (like Wordle or any other background content) */
 .background-content {
-    pointer-events: none;
+    pointer-events: none; /* Disable all mouse/keyboard interaction */
 }
-
-/* ----------------- Media Queries for Smaller Devices ------------------ */
-@media (max-width: 768px) {
-    /* Reduce side padding and margins */
-    .modal-content, .profile-modal-content {
-        padding: 3vh 3vw; /* Less padding for smaller screens */
-        max-width: 90vw; /* Use more width on smaller screens */
-        max-height: 85vh; /* Increase height usage on smaller screens */
-    }
-
-    .close {
-        font-size: 1.5rem; /* Smaller close button */
-    }
-
-    /* Adjust button padding and font size */
-    .btn, .reset-password-btn, .logout-btn {
-        padding: 1vh 1.5vw; /* Smaller padding */
-        font-size: 0.9rem;
