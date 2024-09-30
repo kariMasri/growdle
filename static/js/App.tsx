@@ -175,11 +175,9 @@ function App() {
       setScore(newScore)
       localStorage.setItem('score', newScore.toString())
 
-      showSuccessAlert(winMessage, {
-        delayMs,
-        onClose: () => setIsStatsModalOpen(true),
+
       })
-    }
+    
 
     if (isGameLost) {
       setTimeout(() => {
