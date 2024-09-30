@@ -173,31 +173,33 @@ function App() {
     saveGameStateToLocalStorage(getIsLatestGame(), { guesses, solution })
   }, [guesses])
 
-  useEffect(() => {
-    if (isGameWon) {
-      const winMessage =
-        WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
-      const delayMs = REVEAL_TIME_MS * solution.length
+useEffect(() => {
+  if (isGameWon) {
+    const winMessage =
+      WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
+    const delayMs = REVEAL_TIME_MS * solution.length
 
-      // Increment score by 10 points
-      const newScore = score + 10
-      setScore(newScore)
+    // Increment score by 10 points
+    const newScore = score + 10
+    setScore(newScore)
 
-      // Save the updated score in localStorage
-      localStorage.setItem('score', newScore.toString())
+    // Save the updated score in localStorage
+    localStorage.setItem('score', newScore.toString())
+    
+    console.log('Score updated to:', newScore); // Debugging: Check updated score
 
-      showSuccessAlert(winMessage, {
-        delayMs,
-        onClose: () => setIsStatsModalOpen(true),
-      })
-    }
+    showSuccessAlert(winMessage, {
+      delayMs,
+      onClose: () => setIsStatsModalOpen(true),
+    })
+  }
 
-    if (isGameLost) {
-      setTimeout(() => {
-        setIsStatsModalOpen(true)
-      }, (solution.length + 1) * REVEAL_TIME_MS)
-    }
-  }, [isGameWon, isGameLost, showSuccessAlert, score])
+  if (isGameLost) {
+    setTimeout(() => {
+      setIsStatsModalOpen(true)
+    }, (solution.length + 1) * REVEAL_TIME_MS)
+  }
+}, [isGameWon, isGameLost, showSuccessAlert, score])
 
   const onChar = (value: string) => {
     if (
