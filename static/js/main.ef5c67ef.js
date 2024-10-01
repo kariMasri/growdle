@@ -23881,6 +23881,17 @@
                             required: true,
                             placeholder: "Password"  // Placeholder for password
                         }),
+(0, x.jsx)("script", {
+    type: "text/javascript",
+    children: `
+      hcaptcha.render('your_div_id', {
+        sitekey: 'your_site_key',
+        theme: 'dark',
+        'error-callback': 'onError'
+      });
+    `
+}),
+
 
                         (0, x.jsx)("button", {
                             type: "submit",
@@ -23940,6 +23951,16 @@ id:"loginButton",
                             required: true,
                             placeholder: "Password"  // Placeholder for password
                         }),
+(0, x.jsx)("script", {
+    type: "text/javascript",
+    children: `
+      hcaptcha.render('your_div_id', {
+        sitekey: 'your_site_key',
+        theme: 'dark',
+        'error-callback': 'onError'
+      });
+    `
+}),
 
                         (0, x.jsx)("button", {
                             type: "submit",
