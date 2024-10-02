@@ -23881,22 +23881,21 @@
                             required: true,
                             placeholder: "Password"  // Placeholder for password
                         }),
-(0, x.jsx)("script", {
-    type: "text/javascript",
-    children: `
-      hcaptcha.render('your_div_id', {
-        sitekey: 'your_site_key',
-        theme: 'dark',
-        'error-callback': 'onError'
-      });
-    `
+(0, x.jsx)("div", {
+    className: "h-captcha",
+    "data-sitekey": "2110e32e-9bfa-4ff0-9e24-8b9e8eacac7c",
+    "data-theme": "light",
+    "data-callback": "onCaptchaSuccess" , // Added callback
 }),
+
+
 
 
                         (0, x.jsx)("button", {
                             type: "submit",
                             children: "Login",
 id:"loginButton",
+disabled: true,
                         }),
 
                         (0, x.jsx)("a", {
@@ -23951,21 +23950,19 @@ id:"loginButton",
                             required: true,
                             placeholder: "Password"  // Placeholder for password
                         }),
-(0, x.jsx)("script", {
-    type: "text/javascript",
-    children: `
-      hcaptcha.render('your_div_id', {
-        sitekey: 'your_site_key',
-        theme: 'dark',
-        'error-callback': 'onError'
-      });
-    `
+(0, x.jsx)("div", {
+    className: "h-captcha",
+    "data-sitekey": "2110e32e-9bfa-4ff0-9e24-8b9e8eacac7c",
+    "data-theme": "light",
+    "data-callback": "onCaptchaSuccess" , // Added callback
 }),
+
 
                         (0, x.jsx)("button", {
                             type: "submit",
                             children: "Sign Up",
 id:"signupButton",
+disabled: true,
                         }),
                   
                     ]
