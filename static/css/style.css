@@ -157,6 +157,14 @@ body {
     transition: background-color 0.3s ease, transform 0.3s ease;
     margin-top: 10px;
 }
+.modal-content button[type="submit"]:disabled {
+    background-color: gray;    /* Gray background */
+    color: black;               /* Gray text */
+    cursor: not-allowed;       /* Show a "not allowed" cursor */
+    filter: grayscale(100%);   /* Apply grayscale */
+    opacity: 0.6;              /* Reduce opacity for a "disabled" effect */
+    transition: all 0.3s ease; /* Smooth transition when enabling */
+}
 
 .modal-content button[type="submit"]:hover,
 .profile-modal-content button[type="submit"]:hover {
