@@ -1,11 +1,16 @@
 function onCaptchaSuccess() {
   const loginButton = document.getElementById("loginButton");
-  loginButton.disabled = false; // Enable the button when captcha is solved
-}
-function onCaptchaSuccess() {
   const signupButton = document.getElementById("signupButton");
-  signupButton.disabled = false; // Enable the button when captcha is solved
+
+  if (loginButton) {
+    loginButton.disabled = false; // Enable login button if it exists
+  }
+
+  if (signupButton) {
+    signupButton.disabled = false; // Enable sign-up button if it exists
+  }
 }
+
 document.addEventListener("DOMContentLoaded", function() {
 
     let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
