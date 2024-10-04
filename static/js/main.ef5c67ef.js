@@ -23885,7 +23885,7 @@
     className: "h-captcha",
     "data-sitekey": "2110e32e-9bfa-4ff0-9e24-8b9e8eacac7c",
     "data-theme": "light",
-    "data-callback": "onCaptchaSuccess" , // Added callback
+    "data-callback": "enableBtn" , // Added callback
 }),
 
 
@@ -23954,7 +23954,7 @@ disabled: true,
     className: "h-captcha",
     "data-sitekey": "2110e32e-9bfa-4ff0-9e24-8b9e8eacac7c",
     "data-theme": "light",
-    "data-callback": "onCaptchaSuccess" , // Added callback
+    "data-callback": "enableBtn" , // Added callback
 }),
 
 
