@@ -1,15 +1,3 @@
-function onCaptchaSuccess() {
-  const loginButton = document.getElementById("loginButton");
-  const signupButton = document.getElementById("signupButton");
-
-  if (loginButton) {
-    loginButton.disabled = false; // Enable login button if it exists
-  }
-
-  if (signupButton) {
-    signupButton.disabled = false; // Enable sign-up button if it exists
-  }
-}
 
 document.addEventListener("DOMContentLoaded", function() {
 
