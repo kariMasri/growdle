@@ -1,3 +1,12 @@
+function enableBtn() {
+    const loginButton = document.getElementById("loginButton");
+    if (loginButton) {
+        loginButton.disabled = false;  // Enable the login button when captcha is solved
+    }
+}
+
+// Make sure the function is globally accessible
+window.enableBtn = enableBtn;
 
 document.addEventListener("DOMContentLoaded", function() {
 
