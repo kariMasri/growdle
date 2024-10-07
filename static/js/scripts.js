@@ -14,7 +14,6 @@ function enableBtn() {
 
 window.enableBtn = enableBtn;
 
-
 document.addEventListener("DOMContentLoaded", function() {
 
     let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -87,6 +86,10 @@ document.addEventListener("DOMContentLoaded", function() {
         };
 
         modal.querySelector('form').onsubmit = function(e) {
+ const loginButton = document.getElementById("loginButton");
+    if (loginButton) {
+        loginButton.disabled = true;
+    }
             e.preventDefault();
             let loginValue = document.getElementById('username').value.toLowerCase(); // Convert to lowercase
             const password = document.getElementById('password').value;
@@ -123,6 +126,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const signUpForm = modal.querySelector('form');
         signUpForm.onsubmit = function(e) {
+ const signupButton = document.getElementById("signupButton");
+    if (signupButton) {
+        signupButton.disabled = true;
+    }
             e.preventDefault();
             let username = document.getElementById('newUsername').value.toLowerCase(); // Convert to lowercase
             const email = document.getElementById('email').value.toLowerCase(); // Convert to lowercase
