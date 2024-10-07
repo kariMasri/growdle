@@ -1,11 +1,17 @@
-function enableBtn() {
+function enableButtons() {
+    // Enable login button if it exists
     const loginButton = document.getElementById("loginButton");
     if (loginButton) {
-        loginButton.disabled = false;  // Enable the login button when captcha is solved
+        loginButton.disabled = false;
+    }
+
+    // Enable signup button if it exists
+    const signupButton = document.getElementById("signupButton");
+    if (signupButton) {
+        signupButton.disabled = false;
     }
 }
 
-// Make sure the function is globally accessible
 window.enableBtn = enableBtn;
 
 document.addEventListener("DOMContentLoaded", function() {
