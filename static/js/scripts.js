@@ -14,6 +14,21 @@ function enableBtn() {
 
 window.enableBtn = enableBtn;
 
+function onError() {
+    // Enable login button if it exists
+    const loginButton = document.getElementById("loginButton");
+    if (loginButton) {
+        loginButton.disabled = true;
+    }
+
+        const signupButton = document.getElementById("signupButton");
+    if (signupButton) {
+        signupButton.disabled = true;
+    }
+}
+
+window.onError = onError;
+
 document.addEventListener("DOMContentLoaded", function() {
 
     let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
