@@ -23922,7 +23922,7 @@ disabled: true,
                     children: "×"
                 }),
                 (0, x.jsx)("h2", {
-                    children: "Sign Up"
+                    children: "Register"
                 }),
                 (0, x.jsxs)("form", {
                     children: [
@@ -23962,7 +23962,7 @@ disabled: true,
 
                         (0, x.jsx)("button", {
                             type: "submit",
-                            children: "Sign Up",
+                            children: "Register",
 id:"signupButton",
 disabled: true,
                         }),
