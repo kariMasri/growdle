@@ -1,4 +1,4 @@
-function enableButtons() {
+function enableBtn() {
     // Enable login button if it exists
     const loginButton = document.getElementById("loginButton");
     if (loginButton) {
