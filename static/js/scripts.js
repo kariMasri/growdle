@@ -13,7 +13,6 @@ function enableLoginBtn() {
     }
 }
 
-window.enableBtn = enableBtn;
 
 document.addEventListener("DOMContentLoaded", function() {
 
