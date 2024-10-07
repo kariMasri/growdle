@@ -23847,7 +23847,7 @@
         (0, x.jsx)("button", {
             className: "btn",
             id: "signupBtn",
-            children: "Sign Up"
+            children: "Register"
         })
     ]
 }),
