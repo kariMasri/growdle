@@ -1,11 +1,12 @@
-function enableBtn() {
+function enableLoginBtn() {
     // Enable login button if it exists
     const loginButton = document.getElementById("loginButton");
     if (loginButton) {
         loginButton.disabled = false;
     }
+}
 
-    // Enable signup button if it exists
+    function enableSignupBtn() {
     const signupButton = document.getElementById("signupButton");
     if (signupButton) {
         signupButton.disabled = false;
