@@ -164,19 +164,26 @@ function App() {
     saveGameStateToLocalStorage(getIsLatestGame(), { guesses, solution })
   }, [guesses])
 
-  useEffect(() => {
-    if (isGameWon) {
-      const winMessage =
-        WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
-      const delayMs = REVEAL_TIME_MS * solution.length
+ useEffect(() => {
+  if (isGameWon) {
+    const winMessage =
+      WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)];
+    const delayMs = REVEAL_TIME_MS * solution.length;
 
-      // Add 10 points to the score
-      const newScore = score + 10
-      setScore(newScore)
-      localStorage.setItem('score', newScore.toString())
+    // Retrieve the current score from localStorage (or set it to 0 if not found)
+    let currentScore = parseInt(localStorage.getItem('score') || '0', 10);
 
+    // Increment the score by 10 points
+    currentScore += 10;
 
-      })
+    // Update the score in localStorage
+    localStorage.setItem('score', currentScore.toString());
+
+    // Optionally, display the updated score or a success message
+    console.log(`Score updated! New score: ${currentScore}`);
+  }
+}, [isGameWon, solution.length]);  // Depend on isGameWon and solution length
+
     
 
     if (isGameLost) {
