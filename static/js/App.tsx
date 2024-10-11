@@ -59,13 +59,9 @@ function App() {
         WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
       const delayMs = REVEAL_TIME_MS * solution.length
 
-      // Retrieve the current score from localStorage or set it to 0 if not found
+      // Update score only on game win
       let currentScore = parseInt(localStorage.getItem('score') || '0', 10)
-
-      // Increment the score by 10 points
       currentScore += 10
-
-      // Update the score in localStorage and state
       localStorage.setItem('score', currentScore.toString())
       setScore(currentScore)
 
@@ -84,9 +80,7 @@ function App() {
   }
 
   const onDelete = () => {
-    setCurrentGuess(
-      currentGuess.slice(0, -1)
-    )
+    setCurrentGuess(currentGuess.slice(0, -1))
   }
 
   const onEnter = () => {
@@ -120,9 +114,12 @@ function App() {
       <Grid solution={solution} guesses={guesses} currentGuess={currentGuess} />
       <Keyboard onChar={onChar} onDelete={onDelete} onEnter={onEnter} />
 
-      <StatsModal isGameWon={isGameWon} isGameLost={isGameLost} />
+      {/* Only show StatsModal if game is NOT won or lost */}
+      {!isGameWon && !isGameLost && (
+        <StatsModal isGameWon={isGameWon} isGameLost={isGameLost} />
+      )}
 
-      <p>Your Score: {score}</p> {/* Display the score in the UI */}
+      <p>Your Score: {score}</p> {/* Display the score */}
     </div>
   )
 }
