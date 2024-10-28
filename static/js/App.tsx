@@ -59,11 +59,11 @@ function App() {
         WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
       const delayMs = REVEAL_TIME_MS * solution.length
 
-      // Update score only on game win
+      // Increment the score by 10 and save to local storage
       let currentScore = parseInt(localStorage.getItem('score') || '0', 10)
       currentScore += 10
       localStorage.setItem('score', currentScore.toString())
-      setScore(currentScore)
+      setScore(currentScore) // Update the score state in the app
 
       console.log(`Score updated! New score: ${currentScore}`)
     }
@@ -115,7 +115,7 @@ function App() {
       <Keyboard onChar={onChar} onDelete={onDelete} onEnter={onEnter} />
 
       {/* Only show StatsModal if game is NOT won or lost */}
-      {!isGameWon && !isGameLost && (
+      {!(isGameWon || isGameLost) && (
         <StatsModal isGameWon={isGameWon} isGameLost={isGameLost} />
       )}
 
