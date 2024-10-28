@@ -30,6 +30,7 @@ function App() {
   const [currentGuess, setCurrentGuess] = useState('')
   const [isGameWon, setIsGameWon] = useState(false)
   const [isGameLost, setIsGameLost] = useState(false)
+  const [showStatsModal, setShowStatsModal] = useState(false) // Track modal visibility
   const [guesses, setGuesses] = useState<string[]>(() => {
     const loaded = loadGameStateFromLocalStorage(getIsLatestGame())
     if (loaded?.solution !== solution) {
@@ -55,6 +56,7 @@ function App() {
 
   useEffect(() => {
     if (isGameWon) {
+      console.log("Game won detected, updating score.")
       const winMessage =
         WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
       const delayMs = REVEAL_TIME_MS * solution.length
@@ -66,8 +68,15 @@ function App() {
       setScore(currentScore) // Update the score state in the app
 
       console.log(`Score updated! New score: ${currentScore}`)
+      setShowStatsModal(false) // Explicitly set modal visibility to false
     }
   }, [isGameWon])
+
+  useEffect(() => {
+    if (isGameLost) {
+      setShowStatsModal(false) // Prevent modal from opening on game loss
+    }
+  }, [isGameLost])
 
   const onChar = (value: string) => {
     if (
@@ -114,10 +123,8 @@ function App() {
       <Grid solution={solution} guesses={guesses} currentGuess={currentGuess} />
       <Keyboard onChar={onChar} onDelete={onDelete} onEnter={onEnter} />
 
-      {/* Only show StatsModal if game is NOT won or lost */}
-      {!(isGameWon || isGameLost) && (
-        <StatsModal isGameWon={isGameWon} isGameLost={isGameLost} />
-      )}
+      {/* Only show StatsModal if the modal state is true */}
+      {showStatsModal && <StatsModal isGameWon={isGameWon} isGameLost={isGameLost} />}
 
       <p>Your Score: {score}</p> {/* Display the score */}
     </div>
