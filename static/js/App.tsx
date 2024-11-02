@@ -177,8 +177,13 @@ function App() {
 
       showSuccessAlert(winMessage, {
         delayMs,
-        onClose: () => setIsStatsModalOpen(true),
+  setScore(prevScore => {
+        const newScore = prevScore + 10;
+        localStorage.setItem('score', newScore.toString());
+        return newScore;
+      });
       })
+
     }
 
     if (isGameLost) {
