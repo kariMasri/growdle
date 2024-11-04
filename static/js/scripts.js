@@ -1,3 +1,32 @@
+// scripts.js
+
+let score = 0; // Initialize the score variable
+
+// Function to add points to the score
+function addPoints(points) {
+    score += points; // Add the specified points to the score
+    console.log(`Current Score: ${score}`); // Log the current score to the console
+}
+
+// Function to reset the score (optional, in case you want to start fresh)
+function resetScore() {
+    score = 0;
+    console.log("Score has been reset.");
+}
+
+// Example of a function that checks if the game is won
+function isGameWon() {
+    // Assuming you have some logic here that determines if the game is won
+    const gameWon = true; // Replace this with your actual game win condition
+
+    if (gameWon) {
+        addPoints(10); // Add 10 points when the game is won
+        console.log("You won the game!");
+    }
+}
+
+// You can call `isGameWon()` function when appropriate in your game logic
+
 function enableLoginBtn() {
     // Enable login button if it exists
     const loginButton = document.getElementById("loginButton");
