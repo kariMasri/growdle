@@ -102,7 +102,6 @@ function App() {
   })
 
   const [stats, setStats] = useState(() => loadStats())
-  const [score, setScore] = useState(0) // Initialize the score state
 
   const [isHardMode, setIsHardMode] = useState(
     localStorage.getItem('gameMode')
@@ -111,6 +110,8 @@ function App() {
   )
 
   useEffect(() => {
+    // if no game state on load,
+    // show the user the how-to info modal
     if (!loadGameStateFromLocalStorage(true)) {
       setTimeout(() => {
         setIsInfoModalOpen(true)
@@ -170,25 +171,22 @@ function App() {
 
   useEffect(() => {
     if (isGameWon) {
-      // Add 10 points to the score
-      setScore(prevScore => prevScore + 10);
-
       const winMessage =
-        WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)];
-      const delayMs = REVEAL_TIME_MS * solution.length;
+        WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
+      const delayMs = REVEAL_TIME_MS * solution.length
 
-      // No longer open stats modal here
       showSuccessAlert(winMessage, {
         delayMs,
-      });
+        onClose: () => setIsStatsModalOpen(true),
+      })
     }
 
     if (isGameLost) {
       setTimeout(() => {
-        setIsStatsModalOpen(true);
-      }, (solution.length + 1) * REVEAL_TIME_MS);
+        setIsStatsModalOpen(true)
+      }, (solution.length + 1) * REVEAL_TIME_MS)
     }
-  }, [isGameWon, isGameLost, showSuccessAlert]);
+  }, [isGameWon, isGameLost, showSuccessAlert])
 
   const onChar = (value: string) => {
     if (
@@ -225,6 +223,7 @@ function App() {
       })
     }
 
+    // enforce hard mode - all guesses must contain all previously revealed letters
     if (isHardMode) {
       const firstMissingReveal = findFirstUnusedReveal(currentGuess, guesses)
       if (firstMissingReveal) {
@@ -236,6 +235,8 @@ function App() {
     }
 
     setIsRevealing(true)
+    // turn this back off after all
+    // chars have been revealed
     setTimeout(() => {
       setIsRevealing(false)
     }, REVEAL_TIME_MS * solution.length)
@@ -262,75 +263,105 @@ function App() {
           setStats(addStatsForCompletedGame(stats, guesses.length + 1))
         }
         setIsGameLost(true)
-        return showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
+        showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
           persist: true,
+          delayMs: REVEAL_TIME_MS * solution.length + 1,
         })
       }
     }
   }
 
   return (
-    <Div100vh className={`flex flex-col w-screen h-screen`}>
-      <Navbar
-        onNewGame={() => window.location.reload()}
-        onOpenSettings={() => setIsSettingsModalOpen(true)}
-        onOpenStats={() => setIsStatsModalOpen(true)}
-      />
-      <div className="flex flex-col flex-1 justify-center items-center">
-        <div className="flex flex-col items-center">
-          <Grid
-            guesses={guesses}
-            isGameWon={isGameWon}
-            isGameLost={isGameLost}
-            isRevealing={isRevealing}
-          />
+    <Div100vh>
+      <div className="flex h-full flex-col">
+        <Navbar
+          setIsInfoModalOpen={setIsInfoModalOpen}
+          setIsStatsModalOpen={setIsStatsModalOpen}
+          setIsDatePickerModalOpen={setIsDatePickerModalOpen}
+          setIsSettingsModalOpen={setIsSettingsModalOpen}
+        />
+
+        {!isLatestGame && (
+          <div className="flex items-center justify-center">
+            <ClockIcon className="h-6 w-6 stroke-gray-600 dark:stroke-gray-300" />
+            <p className="text-base text-gray-600 dark:text-gray-300">
+              {format(gameDate, 'd MMMM yyyy', { locale: DATE_LOCALE })}
+            </p>
+          </div>
+        )}
+
+        <div className="mx-auto flex w-full grow flex-col px-1 pt-2 pb-8 sm:px-6 md:max-w-7xl lg:px-8 short:pb-2 short:pt-2">
+          <div className="flex grow flex-col justify-center pb-6 short:pb-2">
+            <Grid
+              solution={solution}
+              guesses={guesses}
+              currentGuess={currentGuess}
+              isRevealing={isRevealing}
+              currentRowClassName={currentRowClass}
+            />
+          </div>
           <Keyboard
             onChar={onChar}
             onDelete={onDelete}
             onEnter={onEnter}
+            solution={solution}
+            guesses={guesses}
+            isRevealing={isRevealing}
           />
-          <div className="flex items-center mt-4">
-            <ClockIcon className="h-5 w-5" />
-            <span className="ml-1">
-              Score: {score} {/* Display the score */}
-            </span>
-          </div>
+          <InfoModal
+            isOpen={isInfoModalOpen}
+            handleClose={() => setIsInfoModalOpen(false)}
+          />
+          <StatsModal
+            isOpen={isStatsModalOpen}
+            handleClose={() => setIsStatsModalOpen(false)}
+            solution={solution}
+            guesses={guesses}
+            gameStats={stats}
+            isLatestGame={isLatestGame}
+            isGameLost={isGameLost}
+            isGameWon={isGameWon}
+            handleShareToClipboard={() => showSuccessAlert(GAME_COPIED_MESSAGE)}
+            handleShareFailure={() =>
+              showErrorAlert(SHARE_FAILURE_TEXT, {
+                durationMs: LONG_ALERT_TIME_MS,
+              })
+            }
+            handleMigrateStatsButton={() => {
+              setIsStatsModalOpen(false)
+              setIsMigrateStatsModalOpen(true)
+            }}
+            isHardMode={isHardMode}
+            isDarkMode={isDarkMode}
+            isHighContrastMode={isHighContrastMode}
+            numberOfGuessesMade={guesses.length}
+          />
+          <DatePickerModal
+            isOpen={isDatePickerModalOpen}
+            initialDate={solutionGameDate}
+            handleSelectDate={(d) => {
+              setIsDatePickerModalOpen(false)
+              setGameDate(d)
+            }}
+            handleClose={() => setIsDatePickerModalOpen(false)}
+          />
+          <MigrateStatsModal
+            isOpen={isMigrateStatsModalOpen}
+            handleClose={() => setIsMigrateStatsModalOpen(false)}
+          />
+          <SettingsModal
+            isOpen={isSettingsModalOpen}
+            handleClose={() => setIsSettingsModalOpen(false)}
+            isHardMode={isHardMode}
+            handleHardMode={handleHardMode}
+            isDarkMode={isDarkMode}
+            handleDarkMode={handleDarkMode}
+            isHighContrastMode={isHighContrastMode}
+            handleHighContrastMode={handleHighContrastMode}
+          />
+          <AlertContainer />
         </div>
       </div>
-
-      <AlertContainer />
-      <InfoModal
-        isOpen={isInfoModalOpen}
-        onClose={() => setIsInfoModalOpen(false)}
-      />
-      <StatsModal
-        isOpen={isStatsModalOpen}
-        onClose={() => setIsStatsModalOpen(false)}
-        stats={stats}
-      />
-      <DatePickerModal
-        isOpen={isDatePickerModalOpen}
-        onClose={() => setIsDatePickerModalOpen(false)}
-        gameDate={gameDate}
-        onConfirmDate={(date) => {
-          setGameDate(date)
-          setIsDatePickerModalOpen(false)
-        }}
-      />
-      <MigrateStatsModal
-        isOpen={isMigrateStatsModalOpen}
-        onClose={() => setIsMigrateStatsModalOpen(false)}
-      />
-      <SettingsModal
-        isOpen={isSettingsModalOpen}
-        onClose={() => setIsSettingsModalOpen(false)}
-        onChangeDarkMode={handleDarkMode}
-        onChangeHighContrastMode={handleHighContrastMode}
-        onChangeHardMode={handleHardMode}
-        isDarkMode={isDarkMode}
-        isHighContrastMode={isHighContrastMode}
-        isHardMode={isHardMode}
-      />
     </Div100vh>
   )
 }
