@@ -166,27 +166,28 @@ function App() {
     saveGameStateToLocalStorage(getIsLatestGame(), { guesses, solution });
   }, [guesses]);
 
-  useEffect(() => {
-     if (isGameWon) {
-      const winMessage = WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)];
-      const delayMs = REVEAL_TIME_MS * solution.length;
+ useEffect(() => {
+  if (isGameWon) {
+    console.log("Game won! Adding 10 points.");
+    window.addScore(10);  // Call the addScore function from scripts.js
 
-      showSuccessAlert(winMessage, {
-        delayMs,
-        onClose: () => {
-          // Update stats with the number of guesses taken
-          setStats(addStatsForCompletedGame(stats, guesses.length));
-          setIsStatsModalOpen(true);
-        },
-      });
-    }
+    const winMessage =
+      WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)];
+    const delayMs = REVEAL_TIME_MS * solution.length;
 
-    if (isGameLost) {
-      setTimeout(() => {
-        setIsStatsModalOpen(true);
-      }, (solution.length + 1) * REVEAL_TIME_MS);
-    }
-  }, [isGameWon, isGameLost, showSuccessAlert]);
+    showSuccessAlert(winMessage, {
+      delayMs,
+      onClose: () => setIsStatsModalOpen(true),
+    });
+  }
+
+  if (isGameLost) {
+    setTimeout(() => {
+      setIsStatsModalOpen(true);
+    }, (solution.length + 1) * REVEAL_TIME_MS);
+  }
+}, [isGameWon, isGameLost, showSuccessAlert]);
+
 
   const onChar = (value: string) => {
     if (
