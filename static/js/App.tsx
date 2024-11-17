@@ -169,24 +169,30 @@ function App() {
     saveGameStateToLocalStorage(getIsLatestGame(), { guesses, solution })
   }, [guesses])
 
-  useEffect(() => {
-    if (isGameWon) {
-      const winMessage =
-        WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
-      const delayMs = REVEAL_TIME_MS * solution.length
+useEffect(() => {
+  if (isGameWon) {
+    const winMessage =
+      WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)];
+    const delayMs = REVEAL_TIME_MS * solution.length;
 
-      showSuccessAlert(winMessage, {
-        delayMs,
-        onClose: () => setIsStatsModalOpen(true),
-      })
-    }
+    // Add 10 points to the score
+    const currentScore = parseInt(localStorage.getItem('score') || '0');
+    const newScore = currentScore + 10;
+    localStorage.setItem('score', newScore);
 
-    if (isGameLost) {
-      setTimeout(() => {
-        setIsStatsModalOpen(true)
-      }, (solution.length + 1) * REVEAL_TIME_MS)
-    }
-  }, [isGameWon, isGameLost, showSuccessAlert])
+    showSuccessAlert(winMessage, {
+      delayMs,
+      onClose: () => setIsStatsModalOpen(true),
+    });
+  }
+
+  if (isGameLost) {
+    setTimeout(() => {
+      setIsStatsModalOpen(true);
+    }, (solution.length + 1) * REVEAL_TIME_MS);
+  }
+}, [isGameWon, isGameLost, showSuccessAlert]);
+
 
   const onChar = (value: string) => {
     if (
