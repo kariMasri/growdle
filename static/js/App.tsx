@@ -176,9 +176,9 @@ useEffect(() => {
     const delayMs = REVEAL_TIME_MS * solution.length;
 
     // Add 10 points to the score
-    const currentScore = parseInt(localStorage.getItem('score') || '0');
+    const currentScore = parseInt(localStorage.getItem('score') || '0', 10);
     const newScore = currentScore + 10;
-    localStorage.setItem('score', newScore);
+    localStorage.setItem('score', newScore.toString()); // Save updated score
 
     showSuccessAlert(winMessage, {
       delayMs,
@@ -192,6 +192,7 @@ useEffect(() => {
     }, (solution.length + 1) * REVEAL_TIME_MS);
   }
 }, [isGameWon, isGameLost, showSuccessAlert]);
+
 
 
   const onChar = (value: string) => {
