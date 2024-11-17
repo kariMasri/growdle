@@ -170,6 +170,12 @@ function App() {
   }, [guesses])
 
 useEffect(() => {
+  useEffect(() => {
+  if (isGameWon) {
+    console.log('Game won! Adding 10 points.');
+  }
+}, [isGameWon]);
+
   if (isGameWon) {
     const winMessage =
       WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)];
