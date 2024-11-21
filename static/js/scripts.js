@@ -6,17 +6,18 @@ function enableLoginBtn() {
     }
 }
 
-    function enableSignupBtn() {
+function enableSignupBtn() {
     const signupButton = document.getElementById("signupButton");
     if (signupButton) {
         signupButton.disabled = false;
     }
 }
+
 function addScore(points) {
-  const currentScore = parseInt(localStorage.getItem('score') || '0');
-  const newScore = currentScore + points;
-  localStorage.setItem('score', newScore);
-  renderUI();
+    const currentScore = parseInt(localStorage.getItem('score') || '0');
+    const newScore = currentScore + points;
+    localStorage.setItem('score', newScore);
+    renderUI();
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -91,10 +92,10 @@ document.addEventListener("DOMContentLoaded", function() {
         };
 
         modal.querySelector('form').onsubmit = function(e) {
- const loginButton = document.getElementById("loginButton");
-    if (loginButton) {
-        loginButton.disabled = true;
-    }
+            const loginButton = document.getElementById("loginButton");
+            if (loginButton) {
+                loginButton.disabled = true;
+            }
             e.preventDefault();
             let loginValue = document.getElementById('username').value.toLowerCase(); // Convert to lowercase
             const password = document.getElementById('password').value;
@@ -131,10 +132,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const signUpForm = modal.querySelector('form');
         signUpForm.onsubmit = function(e) {
- const signupButton = document.getElementById("signupButton");
-    if (signupButton) {
-        signupButton.disabled = true;
-    }
+            const signupButton = document.getElementById("signupButton");
+            if (signupButton) {
+                signupButton.disabled = true;
+            }
             e.preventDefault();
             let username = document.getElementById('newUsername').value.toLowerCase(); // Convert to lowercase
             const email = document.getElementById('email').value.toLowerCase(); // Convert to lowercase
@@ -234,4 +235,3 @@ document.addEventListener("DOMContentLoaded", function() {
 
     renderUI();
 });
-
