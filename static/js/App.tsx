@@ -170,20 +170,27 @@ function App() {
   }, [guesses])
 
   useEffect(() => {
-    if (isGameWon) {
-      const winMessage =
-        WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
-      const delayMs = REVEAL_TIME_MS * solution.length
+  if (isGameWon) {
+    const winMessage =
+      WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)];
+    const delayMs = REVEAL_TIME_MS * solution.length;
 
+    // Add points for winning
+    window.addScore(10); // Assuming `addScore` is available globally
 
-    }
+    showSuccessAlert(winMessage, {
+      delayMs,
+      onClose: () => setIsStatsModalOpen(true),
+    });
+  }
 
-    if (isGameLost) {
-      setTimeout(() => {
-        setIsStatsModalOpen(true)
-      }, (solution.length + 1) * REVEAL_TIME_MS)
-    }
-  }, [isGameWon, isGameLost, showSuccessAlert])
+  if (isGameLost) {
+    setTimeout(() => {
+      setIsStatsModalOpen(true);
+    }, (solution.length + 1) * REVEAL_TIME_MS);
+  }
+}, [isGameWon, isGameLost, showSuccessAlert]);
+
 
   const onChar = (value: string) => {
     if (
