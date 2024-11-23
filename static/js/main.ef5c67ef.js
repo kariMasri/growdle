@@ -24124,24 +24124,31 @@ disabled: true,
                 })
             }
             ), [ee]),
-            (0,
-            e.useEffect)((function() {
-                if (g) {
-                    var e = je[Math.floor(Math.random() * je.length)]
-                      , t = v * Ve.length;
-                    d(e, {
-                        delayMs: t,
-                        onClose: function() {
-                            return T(!0)
-                        }
-                    })
-                }
-                Y && setTimeout((function() {
-                    T(!0)
-                }
-                ), (Ve.length + 1) * v)
+            (0, e.useEffect)((function() {
+    if (g) {
+        // Show a random success message
+        var e = je[Math.floor(Math.random() * je.length)],
+            t = v * Ve.length;
+
+        // Add points for winning
+        addScore(10); // Call your scoring function to add 10 points
+        console.log("Score updated: 10 points added");
+
+        // Show the success alert
+        d(e, {
+            delayMs: t,
+            onClose: function() {
+                return T(!0); // Trigger the next state, e.g., open stats modal
             }
-            ), [g, Y, d]),
+        });
+    }
+    if (Y) {
+        setTimeout((function() {
+            T(!0); // Trigger loss state or stats modal
+        }), (Ve.length + 1) * v);
+    }
+}));
+, [g, Y, d]),
             (0,
             x.jsx)(m, {
                 children: (0,
