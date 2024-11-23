@@ -1,5 +1,4 @@
 function enableLoginBtn() {
-    // Enable login button if it exists
     const loginButton = document.getElementById("loginButton");
     if (loginButton) {
         loginButton.disabled = false;
@@ -17,11 +16,16 @@ function addScore(points) {
     const currentScore = parseInt(localStorage.getItem('score') || '0');
     const newScore = currentScore + points;
     localStorage.setItem('score', newScore);
-    renderUI();
+
+    // Safely call renderUI
+    if (typeof renderUI === "function") {
+        renderUI();
+    } else {
+        console.error("renderUI is not defined or accessible.");
+    }
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-
     let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
     function showMessage(message, type) {
@@ -48,6 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function renderUI() {
+        console.log("Rendering UI...");
         const loginButton = document.getElementById('loginBtn');
         const signUpButton = document.getElementById('signupBtn');
         const rightIcons = document.querySelector('.right-icons');
@@ -97,18 +102,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 loginButton.disabled = true;
             }
             e.preventDefault();
-            let loginValue = document.getElementById('username').value.toLowerCase(); // Convert to lowercase
+            let loginValue = document.getElementById('username').value.toLowerCase();
             const password = document.getElementById('password').value;
 
             const users = getStoredUsers();
-            // Find user by either username or email
             const user = users.find(user => (user.username === loginValue || user.email === loginValue) && user.password === password);
 
             if (user) {
                 showMessage('Login successful!', 'success');
                 localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('loggedInUser', user.username);  // Store the username in localStorage
-                localStorage.setItem('score', user.score || 0); // Store the user's score or set default 0
+                localStorage.setItem('loggedInUser', user.username);
+                localStorage.setItem('score', user.score || 0);
                 isLoggedIn = true;
                 renderUI();
                 modal.style.display = 'none';
@@ -137,8 +141,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 signupButton.disabled = true;
             }
             e.preventDefault();
-            let username = document.getElementById('newUsername').value.toLowerCase(); // Convert to lowercase
-            const email = document.getElementById('email').value.toLowerCase(); // Convert to lowercase
+            let username = document.getElementById('newUsername').value.toLowerCase();
+            const email = document.getElementById('email').value.toLowerCase();
             const password = document.getElementById('newPassword').value;
 
             const usernamePattern = /^[a-z0-9]+$/;
@@ -147,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 return;
             }
 
-            let users = getStoredUsers(); // Retrieve users from localStorage
+            let users = getStoredUsers();
             console.log('Users before sign-up:', users);
 
             if (users.find(user => user.username === username)) {
@@ -157,16 +161,15 @@ document.addEventListener("DOMContentLoaded", function() {
             } else if (password.length < 6) {
                 showMessage('Password must be at least 6 characters long', 'error');
             } else {
-                // Add the new user with default score of 0
                 const newUser = { username, email, password, score: 0 };
                 users.push(newUser);
-                saveUsers(users); // Save users back to localStorage
+                saveUsers(users);
                 console.log('Users after sign-up:', users);
 
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('loggedInUser', username);
-                localStorage.setItem('score', 0); // Set default score for the new user
-                isLoggedIn = true; // Update the isLoggedIn state
+                localStorage.setItem('score', 0);
+                isLoggedIn = true;
 
                 renderUI();
                 showMessage('Sign-up successful!', 'success');
@@ -184,7 +187,6 @@ document.addEventListener("DOMContentLoaded", function() {
         const modalContent = document.createElement('div');
         modalContent.className = 'profile-modal-content';
 
-        // Fetch the logged in user's score
         const score = localStorage.getItem('score') || 0;
 
         modalContent.innerHTML = `
@@ -213,7 +215,7 @@ document.addEventListener("DOMContentLoaded", function() {
         modal.querySelector('.logout-btn').onclick = function() {
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('loggedInUser');
-            localStorage.removeItem('score'); // Clear the score when logged out
+            localStorage.removeItem('score');
             isLoggedIn = false;
             renderUI();
             document.body.removeChild(modal);
