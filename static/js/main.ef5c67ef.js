@@ -24124,7 +24124,11 @@ disabled: true,
                 })
             }
             ), [ee]),
-            (0, e.useEffect)((function() {
+            
+
+
+
+(0, e.useEffect)((function() {
     if (g) {
         // Show a random success message
         var e = je[Math.floor(Math.random() * je.length)],
@@ -24147,8 +24151,14 @@ disabled: true,
             T(!0); // Trigger loss state or stats modal
         }), (Ve.length + 1) * v);
     }
-}));
-, [g, Y, d]),
+}))};
+
+
+
+
+
+
+ [g, Y, d]),
             (0,
             x.jsx)(m, {
                 children: (0,
