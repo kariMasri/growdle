@@ -12,7 +12,6 @@ function enableSignupBtn() {
     }
 }
 
-// Emit event for score update
 function addScore(points) {
     const currentScore = parseInt(localStorage.getItem('score') || '0');
     const newScore = currentScore + points;
@@ -26,9 +25,7 @@ function addScore(points) {
     }
 }
 
-
-
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function() {
     let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
     function showMessage(message, type) {
@@ -37,9 +34,9 @@ document.addEventListener("DOMContentLoaded", function () {
         messageBox.textContent = message;
         document.body.appendChild(messageBox);
 
-        setTimeout(function () {
+        setTimeout(function() {
             messageBox.classList.add('fade-out');
-            setTimeout(function () {
+            setTimeout(function() {
                 document.body.removeChild(messageBox);
             }, 1000);
         }, 3000);
@@ -55,6 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function renderUI() {
+        console.log("Rendering UI...");
         const loginButton = document.getElementById('loginBtn');
         const signUpButton = document.getElementById('signupBtn');
         const rightIcons = document.querySelector('.right-icons');
@@ -74,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
             profileButton.style.backgroundImage = "url('profile.jfif')";
             rightIcons.appendChild(profileButton);
 
-            profileButton.onclick = function () {
+            profileButton.onclick = function() {
                 showProfileModal();
             };
         } else {
@@ -89,22 +87,22 @@ document.addEventListener("DOMContentLoaded", function () {
     function openLoginModal() {
         const modal = document.getElementById('loginModal');
         modal.style.display = 'flex';
-        setTimeout(function () {
+        setTimeout(function() {
             modal.querySelector('.modal-content').classList.add('show');
         }, 10);
 
-        modal.querySelector('.close').onclick = function () {
+        modal.querySelector('.close').onclick = function() {
             modal.style.display = 'none';
             modal.querySelector('.modal-content').classList.remove('show');
         };
 
-        modal.querySelector('form').onsubmit = function (e) {
+        modal.querySelector('form').onsubmit = function(e) {
             const loginButton = document.getElementById("loginButton");
             if (loginButton) {
                 loginButton.disabled = true;
             }
             e.preventDefault();
-            let loginValue = document.getElementById('username').value.toLowerCase(); // Convert to lowercase
+            let loginValue = document.getElementById('username').value.toLowerCase();
             const password = document.getElementById('password').value;
 
             const users = getStoredUsers();
@@ -127,24 +125,24 @@ document.addEventListener("DOMContentLoaded", function () {
     function openSignUpModal() {
         const modal = document.getElementById('signupModal');
         modal.style.display = 'flex';
-        setTimeout(function () {
+        setTimeout(function() {
             modal.querySelector('.modal-content').classList.add('show');
         }, 10);
 
-        modal.querySelector('.close').onclick = function () {
+        modal.querySelector('.close').onclick = function() {
             modal.style.display = 'none';
             modal.querySelector('.modal-content').classList.remove('show');
         };
 
         const signUpForm = modal.querySelector('form');
-        signUpForm.onsubmit = function (e) {
+        signUpForm.onsubmit = function(e) {
             const signupButton = document.getElementById("signupButton");
             if (signupButton) {
                 signupButton.disabled = true;
             }
             e.preventDefault();
-            let username = document.getElementById('newUsername').value.toLowerCase(); // Convert to lowercase
-            const email = document.getElementById('email').value.toLowerCase(); // Convert to lowercase
+            let username = document.getElementById('newUsername').value.toLowerCase();
+            const email = document.getElementById('email').value.toLowerCase();
             const password = document.getElementById('newPassword').value;
 
             const usernamePattern = /^[a-z0-9]+$/;
@@ -154,6 +152,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             let users = getStoredUsers();
+            console.log('Users before sign-up:', users);
+
             if (users.find(user => user.username === username)) {
                 showMessage('Username already exists!', 'error');
             } else if (users.find(user => user.email === email)) {
@@ -164,17 +164,76 @@ document.addEventListener("DOMContentLoaded", function () {
                 const newUser = { username, email, password, score: 0 };
                 users.push(newUser);
                 saveUsers(users);
+                console.log('Users after sign-up:', users);
 
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('loggedInUser', username);
                 localStorage.setItem('score', 0);
                 isLoggedIn = true;
+
                 renderUI();
                 showMessage('Sign-up successful!', 'success');
                 modal.style.display = 'none';
             }
         };
     }
+
+    function showProfileModal() {
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.id = 'profileModal';
+        modal.style.display = 'flex';
+
+        const modalContent = document.createElement('div');
+        modalContent.className = 'profile-modal-content';
+
+        const score = localStorage.getItem('score') || 0;
+
+        modalContent.innerHTML = `
+            <span class="close">&times;</span>
+            <div class="profile-picture-large" style="background-image: url('profile.jfif');"></div>
+            <p class="username">${localStorage.getItem('loggedInUser')}</p>
+            <p class="score" style="position: relative;">
+                <img src="static/media/wl.png" alt="Score Icon" class="score-icon">
+                <span class="score-number">${score}</span>
+            </p>
+            <button class="reset-password-btn">Reset Password</button>
+            <button class="logout-btn">Logout</button>
+        `;
+
+        modal.appendChild(modalContent);
+        document.body.appendChild(modal);
+
+        setTimeout(function() {
+            modalContent.classList.add('show');
+        }, 10);
+
+        modal.querySelector('.close').onclick = function() {
+            document.body.removeChild(modal);
+        };
+
+        modal.querySelector('.logout-btn').onclick = function() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('loggedInUser');
+            localStorage.removeItem('score');
+            isLoggedIn = false;
+            renderUI();
+            document.body.removeChild(modal);
+            showMessage('Logged out successfully', 'success');
+        };
+
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                document.body.removeChild(modal);
+            }
+        };
+    }
+
+    document.getElementById('loginModal').style.display = 'none';
+    document.getElementById('signupModal').style.display = 'none';
+
+    document.getElementById('loginBtn').onclick = openLoginModal;
+    document.getElementById('signupBtn').onclick = openSignUpModal;
 
     renderUI();
 });
