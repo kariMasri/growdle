@@ -40,7 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log('Score updated in local storage.');
     });
 
-    initializeNewGame();
 });
 
 
