@@ -14,33 +14,18 @@ function enableSignupBtn() {
 
 // Emit event for score update
 function addScore(points) {
-    const gameWon = localStorage.getItem('gameWon');
-    if (gameWon === 'true') {
-        console.warn("Score already added for the current game.");
-        return;
-    }
-
     const currentScore = parseInt(localStorage.getItem('score') || '0');
     const newScore = currentScore + points;
     localStorage.setItem('score', newScore);
 
-    // Mark that the score has been updated
-    localStorage.setItem('gameWon', 'true');
-
-    // Emit score updated event
-    const event = new Event('scoreUpdated');
-    document.dispatchEvent(event);
-
-    console.log(`${points} points added to score`);
+    // Safely call renderUI
+    if (typeof renderUI === "function") {
+        renderUI();
+    } else {
+        console.error("renderUI is not defined or accessible.");
+    }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    // React can also listen for this event
-    document.addEventListener('scoreUpdated', () => {
-        console.log('Score updated in local storage.');
-    });
-
-});
 
 
 document.addEventListener("DOMContentLoaded", function () {
