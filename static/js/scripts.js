@@ -12,6 +12,7 @@ function enableSignupBtn() {
     }
 }
 
+// Emit event for score update
 function addScore(points) {
     const gameWon = localStorage.getItem('gameWon');
     if (gameWon === 'true') {
@@ -26,20 +27,22 @@ function addScore(points) {
     // Mark that the score has been updated
     localStorage.setItem('gameWon', 'true');
 
+    // Emit score updated event
+    const event = new Event('scoreUpdated');
+    document.dispatchEvent(event);
+
     console.log(`${points} points added to score`);
-    if (typeof renderUI === "function") {
-        renderUI();
-    } else {
-        console.error("renderUI is not defined or accessible.");
-    }
 }
 
-function initializeNewGame() {
-    // Reset game-related flags and states
-    localStorage.setItem('gameWon', 'false');
-    console.log("New game initialized");
-    // Add other initialization logic if needed...
-}
+document.addEventListener("DOMContentLoaded", function () {
+    // React can also listen for this event
+    document.addEventListener('scoreUpdated', () => {
+        console.log('Score updated in local storage.');
+    });
+
+    initializeNewGame();
+});
+
 
 document.addEventListener("DOMContentLoaded", function () {
     let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
