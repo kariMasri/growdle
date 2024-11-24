@@ -176,9 +176,11 @@ useEffect(() => {
       onClose: () => {
         // Update score in state and localStorage
         const newScore = score + 10;
-        setScore(newScore);
-        localStorage.setItem('score', newScore.toString());
-        console.log('Updated score:', newScore);  // Log the updated score
+        setScore(newScore); // This will update the score in the state
+        localStorage.setItem('score', newScore.toString()); // Update score in localStorage
+
+        // Log the updated score
+        console.log("Updated score: ", localStorage.getItem('score')); // Log score after update
       },
     });
   }
@@ -190,6 +192,7 @@ useEffect(() => {
     });
   }
 }, [isGameWon, isGameLost, showSuccessAlert, showErrorAlert, score]);
+
 
 
 
