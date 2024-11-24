@@ -24125,34 +24125,42 @@ disabled: true,
             }
             ), [ee]),
             
-(0,
-e.useEffect)((function() {
+(0, e.useEffect)((function() {
     if (g) {
-        var e = je[Math.floor(Math.random() * je.length)]
-          , t = v * Ve.length;
-
-        // Add points for winning
-        if (typeof addScore === 'function') {
-            addScore(10); // Add 10 points to the score
-            console.log("10 points added to score");
-        } else {
-            console.error("addScore function not found");
+        // Check if the points have already been added for this session
+        const pointsAdded = localStorage.getItem('pointsAdded');
+        if (!pointsAdded) {
+            // Add points for winning
+            if (typeof addScore === 'function') {
+                addScore(10); // Add 10 points to the score
+                console.log("10 points added to score");
+                
+                // Set a flag in localStorage to track that points have been added
+                localStorage.setItem('pointsAdded', 'true');
+            } else {
+                console.error("addScore function not found");
+            }
         }
+
+        var e = je[Math.floor(Math.random() * je.length)];
+        var t = v * Ve.length;
 
         d(e, {
             delayMs: t,
             onClose: function() {
-                return T(!0) // Trigger the next state, e.g., open stats modal
+                return T(!0); // Trigger the next state, e.g., open stats modal
             }
         });
     }
+
     if (Y) {
         setTimeout((function() {
-            T(!0) // Trigger loss state or stats modal
+            T(!0); // Trigger loss state or stats modal
         }), (Ve.length + 1) * v);
     }
 }
 ), [g, Y, d]),
+
 
             (0,
             x.jsx)(m, {
