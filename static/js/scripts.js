@@ -1,239 +1,162 @@
-function enableLoginBtn() {
-    const loginButton = document.getElementById("loginButton");
-    if (loginButton) {
-        loginButton.disabled = false;
-    }
+let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+let loggedInUser = localStorage.getItem('loggedInUser');
+let score = parseInt(localStorage.getItem('score'), 10) || 0;
+
+// Function to display messages
+function showMessage(message, type) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `message ${type}`;
+    msgDiv.textContent = message;
+    document.body.appendChild(msgDiv);
+
+    setTimeout(() => {
+        document.body.removeChild(msgDiv);
+    }, 3000);
 }
 
-function enableSignupBtn() {
-    const signupButton = document.getElementById("signupButton");
-    if (signupButton) {
-        signupButton.disabled = false;
-    }
-}
-
+// Function to add score
 function addScore(points) {
-    const currentScore = parseInt(localStorage.getItem('score') || '0');
-    const newScore = currentScore + points;
-    localStorage.setItem('score', newScore);
+    score += points;
+    localStorage.setItem('score', score);
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    if (scoreDisplay) {
+        scoreDisplay.textContent = `Score: ${score}`;
+    }
+}
 
-    // Safely call renderUI
-    if (typeof renderUI === "function") {
+// Function to render the UI
+function renderUI() {
+    const loginButton = document.getElementById('loginBtn');
+    const signUpButton = document.getElementById('signupBtn');
+    const rightIcons = document.querySelector('.right-icons');
+
+    const existingProfileButton = document.getElementById('profileBtn');
+    if (existingProfileButton) {
+        existingProfileButton.remove();
+    }
+
+    if (isLoggedIn) {
+        loginButton.style.display = 'none';
+        signUpButton.style.display = 'none';
+
+        const profileButton = document.createElement('button');
+        profileButton.className = 'btn profile-btn';
+        profileButton.id = 'profileBtn';
+        profileButton.style.backgroundImage = "url('profile.jfif')";
+        rightIcons.appendChild(profileButton);
+
+        profileButton.onclick = function() {
+            showProfileModal();
+        };
+
+        // Display the score
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        if (scoreDisplay) {
+            scoreDisplay.textContent = `Score: ${score}`;
+        }
+    } else {
+        loginButton.style.display = 'inline-block';
+        signUpButton.style.display = 'inline-block';
+
+        loginButton.onclick = openLoginModal;
+        signUpButton.onclick = openSignUpModal;
+    }
+}
+
+// Function to handle login
+function login(username, password) {
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const user = users.find(u => u.username === username && u.password === password);
+
+    if (user) {
+        showMessage('Login successful!', 'success');
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('loggedInUser', user.username);
+        score = user.score || 0;
+        localStorage.setItem('score', score);
+        isLoggedIn = true;
         renderUI();
     } else {
-        console.error("renderUI is not defined or accessible.");
+        showMessage('Incorrect username or password', 'error');
     }
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-
-    function showMessage(message, type) {
-        const messageBox = document.createElement('div');
-        messageBox.className = `message-box ${type}`;
-        messageBox.textContent = message;
-        document.body.appendChild(messageBox);
-
-        setTimeout(function() {
-            messageBox.classList.add('fade-out');
-            setTimeout(function() {
-                document.body.removeChild(messageBox);
-            }, 1000);
-        }, 3000);
-    }
-
-    function getStoredUsers() {
-        const users = localStorage.getItem('users');
-        return users ? JSON.parse(users) : [];
-    }
-
-    function saveUsers(users) {
-        localStorage.setItem('users', JSON.stringify(users));
-    }
-
-    function renderUI() {
-        console.log("Rendering UI...");
-        const loginButton = document.getElementById('loginBtn');
-        const signUpButton = document.getElementById('signupBtn');
-        const rightIcons = document.querySelector('.right-icons');
-
-        const existingProfileButton = document.getElementById('profileBtn');
-        if (existingProfileButton) {
-            existingProfileButton.remove();
-        }
-
-        if (isLoggedIn) {
-            loginButton.style.display = 'none';
-            signUpButton.style.display = 'none';
-
-            const profileButton = document.createElement('button');
-            profileButton.className = 'btn profile-btn';
-            profileButton.id = 'profileBtn';
-            profileButton.style.backgroundImage = "url('profile.jfif')";
-            rightIcons.appendChild(profileButton);
-
-            profileButton.onclick = function() {
-                showProfileModal();
-            };
-        } else {
-            loginButton.style.display = 'inline-block';
-            signUpButton.style.display = 'inline-block';
-
-            loginButton.onclick = openLoginModal;
-            signUpButton.onclick = openSignUpModal;
-        }
-    }
-
-    function openLoginModal() {
-        const modal = document.getElementById('loginModal');
-        modal.style.display = 'flex';
-        setTimeout(function() {
-            modal.querySelector('.modal-content').classList.add('show');
-        }, 10);
-
-        modal.querySelector('.close').onclick = function() {
-            modal.style.display = 'none';
-            modal.querySelector('.modal-content').classList.remove('show');
-        };
-
-        modal.querySelector('form').onsubmit = function(e) {
-            const loginButton = document.getElementById("loginButton");
-            if (loginButton) {
-                loginButton.disabled = true;
-            }
-            e.preventDefault();
-            let loginValue = document.getElementById('username').value.toLowerCase();
-            const password = document.getElementById('password').value;
-
-            const users = getStoredUsers();
-            const user = users.find(user => (user.username === loginValue || user.email === loginValue) && user.password === password);
-
-            if (user) {
-                showMessage('Login successful!', 'success');
-                localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('loggedInUser', user.username);
-                localStorage.setItem('score', user.score || 0);
-                isLoggedIn = true;
-                renderUI();
-                modal.style.display = 'none';
-            } else {
-                showMessage('Incorrect username/email or password', 'error');
-            }
-        };
-    }
-
-    function openSignUpModal() {
-        const modal = document.getElementById('signupModal');
-        modal.style.display = 'flex';
-        setTimeout(function() {
-            modal.querySelector('.modal-content').classList.add('show');
-        }, 10);
-
-        modal.querySelector('.close').onclick = function() {
-            modal.style.display = 'none';
-            modal.querySelector('.modal-content').classList.remove('show');
-        };
-
-        const signUpForm = modal.querySelector('form');
-        signUpForm.onsubmit = function(e) {
-            const signupButton = document.getElementById("signupButton");
-            if (signupButton) {
-                signupButton.disabled = true;
-            }
-            e.preventDefault();
-            let username = document.getElementById('newUsername').value.toLowerCase();
-            const email = document.getElementById('email').value.toLowerCase();
-            const password = document.getElementById('newPassword').value;
-
-            const usernamePattern = /^[a-z0-9]+$/;
-            if (!usernamePattern.test(username)) {
-                showMessage('Username can only contain lowercase letters and numbers.', 'error');
-                return;
-            }
-
-            let users = getStoredUsers();
-            console.log('Users before sign-up:', users);
-
-            if (users.find(user => user.username === username)) {
-                showMessage('Username already exists!', 'error');
-            } else if (users.find(user => user.email === email)) {
-                showMessage('Email already exists!', 'error');
-            } else if (password.length < 6) {
-                showMessage('Password must be at least 6 characters long', 'error');
-            } else {
-                const newUser = { username, email, password, score: 0 };
-                users.push(newUser);
-                saveUsers(users);
-                console.log('Users after sign-up:', users);
-
-                localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('loggedInUser', username);
-                localStorage.setItem('score', 0);
-                isLoggedIn = true;
-
-                renderUI();
-                showMessage('Sign-up successful!', 'success');
-                modal.style.display = 'none';
-            }
-        };
-    }
-
-    function showProfileModal() {
-        const modal = document.createElement('div');
-        modal.className = 'modal';
-        modal.id = 'profileModal';
-        modal.style.display = 'flex';
-
-        const modalContent = document.createElement('div');
-        modalContent.className = 'profile-modal-content';
-
-        const score = localStorage.getItem('score') || 0;
-
-        modalContent.innerHTML = `
-            <span class="close">&times;</span>
-            <div class="profile-picture-large" style="background-image: url('profile.jfif');"></div>
-            <p class="username">${localStorage.getItem('loggedInUser')}</p>
-            <p class="score" style="position: relative;">
-                <img src="static/media/wl.png" alt="Score Icon" class="score-icon">
-                <span class="score-number">${score}</span>
-            </p>
-            <button class="reset-password-btn">Reset Password</button>
-            <button class="logout-btn">Logout</button>
-        `;
-
-        modal.appendChild(modalContent);
-        document.body.appendChild(modal);
-
-        setTimeout(function() {
-            modalContent.classList.add('show');
-        }, 10);
-
-        modal.querySelector('.close').onclick = function() {
-            document.body.removeChild(modal);
-        };
-
-        modal.querySelector('.logout-btn').onclick = function() {
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('loggedInUser');
-            localStorage.removeItem('score');
-            isLoggedIn = false;
-            renderUI();
-            document.body.removeChild(modal);
-            showMessage('Logged out successfully', 'success');
-        };
-
-        window.onclick = function(event) {
-            if (event.target === modal) {
-                document.body.removeChild(modal);
-            }
-        };
-    }
-
-    document.getElementById('loginModal').style.display = 'none';
-    document.getElementById('signupModal').style.display = 'none';
-
-    document.getElementById('loginBtn').onclick = openLoginModal;
-    document.getElementById('signupBtn').onclick = openSignUpModal;
-
+// Function to handle logout
+function logout() {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('loggedInUser');
+    isLoggedIn = false;
     renderUI();
+    showMessage('Logged out successfully', 'success');
+}
+
+// Function to handle signup
+function signUp(username, password) {
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    if (users.find(u => u.username === username)) {
+        showMessage('Username already exists', 'error');
+        return;
+    }
+    if (password.length < 6) {
+        showMessage('Password must be at least 6 characters', 'error');
+        return;
+    }
+
+    users.push({ username, password, score: 0 });
+    localStorage.setItem('users', JSON.stringify(users));
+    showMessage('Signup successful!', 'success');
+}
+
+// Function to show the profile modal
+function showProfileModal() {
+    const modal = document.createElement('div');
+    modal.className = 'profile-modal';
+    modal.innerHTML = `
+        <h2>Profile</h2>
+        <p>Username: ${loggedInUser}</p>
+        <p id="profileScore">Score: ${score}</p>
+        <button class="logout-btn">Logout</button>
+    `;
+    document.body.appendChild(modal);
+
+    modal.querySelector('.logout-btn').onclick = function() {
+        logout();
+        document.body.removeChild(modal);
+    };
+}
+
+// Handle game win (update score only once per session)
+function handleGameWin() {
+    const pointsAdded = localStorage.getItem('pointsAdded');
+    if (!pointsAdded) {
+        addScore(10);
+        localStorage.setItem('pointsAdded', 'true');
+        console.log("10 points added to score");
+    }
+}
+
+// Handle page refresh or game reset
+window.addEventListener('load', () => {
+    renderUI();
+
+    // Reset the "pointsAdded" flag when the game resets
+    if (!isGameWon) {
+        localStorage.removeItem('pointsAdded');
+    }
 });
+
+// Add event listeners for login and signup forms
+document.getElementById('loginForm').onsubmit = function(e) {
+    e.preventDefault();
+    const username = e.target.username.value.toLowerCase();
+    const password = e.target.password.value;
+    login(username, password);
+};
+
+document.getElementById('signupForm').onsubmit = function(e) {
+    e.preventDefault();
+    const username = e.target.username.value.toLowerCase();
+    const password = e.target.password.value;
+    signUp(username, password);
+};
+
