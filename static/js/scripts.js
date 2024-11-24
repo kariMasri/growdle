@@ -14,16 +14,23 @@ function enableSignupBtn() {
 
 function addScore(points) {
     const currentScore = parseInt(localStorage.getItem('score') || '0');
+    console.log("Current score: ", currentScore); // Debugging line
     const newScore = currentScore + points;
+    console.log("New score after adding points: ", newScore); // Debugging line
     localStorage.setItem('score', newScore);
-
-    // Safely call renderUI
+    
+    // Render the UI to reflect the updated score
     if (typeof renderUI === "function") {
         renderUI();
     } else {
         console.error("renderUI is not defined or accessible.");
     }
 }
+if (isGameWon) {
+    addScore(10); // Add 10 points when the game is won
+    console.log("Game won! Adding 10 points.");
+}
+
 
 document.addEventListener("DOMContentLoaded", function() {
     let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
