@@ -112,7 +112,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 showMessage('Login successful!', 'success');
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('loggedInUser', user.username);
-                localStorage.setItem('score', user.score || 0);
+                if (user.score !== undefined) {
+    localStorage.setItem('score', user.score);
+} else {
+    localStorage.setItem('score', 0); // Default to 0 if the score is not defined
+}
+
                 isLoggedIn = true;
                 renderUI();
                 modal.style.display = 'none';
@@ -215,7 +220,7 @@ document.addEventListener("DOMContentLoaded", function() {
         modal.querySelector('.logout-btn').onclick = function() {
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('loggedInUser');
-            localStorage.removeItem('score');
+          
             isLoggedIn = false;
             renderUI();
             document.body.removeChild(modal);
