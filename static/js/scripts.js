@@ -14,19 +14,18 @@ function enableSignupBtn() {
 
 function addScore(points) {
     const currentScore = parseInt(localStorage.getItem('score') || '0');
-    console.log("Current score: ", currentScore); // Debugging line
+    console.log("Current score: ", currentScore); // Log current score
     const newScore = currentScore + points;
-    console.log("New score after adding points: ", newScore); // Debugging line
-    localStorage.setItem('score', newScore);
-    
-    // Render the UI to reflect the updated score
+    console.log("New score after adding points: ", newScore); // Log updated score
+    localStorage.setItem('score', newScore); // Save new score to localStorage
+
+    // Safely call renderUI
     if (typeof renderUI === "function") {
         renderUI();
     } else {
         console.error("renderUI is not defined or accessible.");
     }
 }
-
 
 document.addEventListener("DOMContentLoaded", function() {
     let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -56,6 +55,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function renderUI() {
         console.log("Rendering UI...");
+
+        // Get updated score from localStorage
+        const score = localStorage.getItem('score') || 0;
+        console.log("Current score in renderUI: ", score); // Log the current score
+
         const loginButton = document.getElementById('loginBtn');
         const signUpButton = document.getElementById('signupBtn');
         const rightIcons = document.querySelector('.right-icons');
@@ -84,6 +88,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
             loginButton.onclick = openLoginModal;
             signUpButton.onclick = openSignUpModal;
+        }
+
+        // Update the score display (assuming you have an element to show it)
+        const scoreElement = document.getElementById('scoreDisplay');
+        if (scoreElement) {
+            scoreElement.textContent = score;
         }
     }
 
@@ -216,25 +226,9 @@ document.addEventListener("DOMContentLoaded", function() {
         };
 
         modal.querySelector('.logout-btn').onclick = function() {
-            const loggedInUser = localStorage.getItem('loggedInUser');
-            const currentScore = parseInt(localStorage.getItem('score') || '0');
-            let users = getStoredUsers();
-
-            // Update the user's score in the users array
-            users = users.map(user => {
-                if (user.username === loggedInUser) {
-                    user.score = currentScore; // Save the current score
-                }
-                return user;
-            });
-
-            saveUsers(users); // Persist updated users array
-
-            // Clear localStorage for login state
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('loggedInUser');
             localStorage.removeItem('score');
-
             isLoggedIn = false;
             renderUI();
             document.body.removeChild(modal);
