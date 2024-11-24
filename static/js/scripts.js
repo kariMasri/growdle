@@ -26,10 +26,6 @@ function addScore(points) {
         console.error("renderUI is not defined or accessible.");
     }
 }
-if (isGameWon) {
-    addScore(10); // Add 10 points when the game is won
-    console.log("Game won! Adding 10 points.");
-}
 
 
 document.addEventListener("DOMContentLoaded", function() {
