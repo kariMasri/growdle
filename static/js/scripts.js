@@ -17,14 +17,13 @@ function addScore(points) {
     const newScore = currentScore + points;
     localStorage.setItem('score', newScore);
 
-    // Call renderUI to update the displayed score
+    // Safely call renderUI
     if (typeof renderUI === "function") {
         renderUI();
     } else {
         console.error("renderUI is not defined or accessible.");
     }
 }
-
 
 document.addEventListener("DOMContentLoaded", function() {
     let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -113,12 +112,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 showMessage('Login successful!', 'success');
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('loggedInUser', user.username);
-                if (user.score !== undefined) {
-    localStorage.setItem('score', user.score);
-} else {
-    localStorage.setItem('score', 0); // Default to 0 if the score is not defined
-}
-
+                localStorage.setItem('score', user.score || 0);
                 isLoggedIn = true;
                 renderUI();
                 modal.style.display = 'none';
@@ -219,9 +213,25 @@ document.addEventListener("DOMContentLoaded", function() {
         };
 
         modal.querySelector('.logout-btn').onclick = function() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            const currentScore = parseInt(localStorage.getItem('score') || '0');
+            let users = getStoredUsers();
+
+            // Update the user's score in the users array
+            users = users.map(user => {
+                if (user.username === loggedInUser) {
+                    user.score = currentScore; // Save the current score
+                }
+                return user;
+            });
+
+            saveUsers(users); // Persist updated users array
+
+            // Clear localStorage for login state
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('loggedInUser');
-          
+            localStorage.removeItem('score');
+
             isLoggedIn = false;
             renderUI();
             document.body.removeChild(modal);
