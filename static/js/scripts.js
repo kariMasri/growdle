@@ -17,13 +17,14 @@ function addScore(points) {
     const newScore = currentScore + points;
     localStorage.setItem('score', newScore);
 
-    // Safely call renderUI
+    // Call renderUI to update the displayed score
     if (typeof renderUI === "function") {
         renderUI();
     } else {
         console.error("renderUI is not defined or accessible.");
     }
 }
+
 
 document.addEventListener("DOMContentLoaded", function() {
     let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
