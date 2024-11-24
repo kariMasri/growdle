@@ -164,29 +164,32 @@ function App() {
     saveGameStateToLocalStorage(getIsLatestGame(), { guesses, solution })
   }, [guesses])
 
-  useEffect(() => {
-    if (isGameWon) {
-      const winMessage =
-        WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
-      const delayMs = REVEAL_TIME_MS * solution.length
+useEffect(() => {
+  if (isGameWon) {
+    const winMessage =
+      WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)];
+    const delayMs = REVEAL_TIME_MS * solution.length;
 
-      // Add 10 points to the score
-      const newScore = score + 10
-      setScore(newScore)
-      localStorage.setItem('score', newScore.toString())
+    // Display success message and update score
+    showSuccessAlert(winMessage, {
+      delayMs,
+      onClose: () => {
+        // Update score in state and localStorage
+        const newScore = score + 10;
+        setScore(newScore);
+        localStorage.setItem('score', newScore.toString());
+      },
+    });
+  }
 
-      showSuccessAlert(winMessage, {
-        delayMs,
-        onClose: () => setIsStatsModalOpen(true),
-      })
-    
+  if (isGameLost) {
+    showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
+      persist: true,
+      delayMs: REVEAL_TIME_MS * solution.length + 1,
+    });
+  }
+}, [isGameWon, isGameLost, showSuccessAlert, showErrorAlert, score]);
 
-    if (isGameLost) {
-      setTimeout(() => {
-        setIsStatsModalOpen(true)
-      }, (solution.length + 1) * REVEAL_TIME_MS)
-    }
-  }, [isGameWon, isGameLost, showSuccessAlert, score])
 
   const onChar = (value: string) => {
     if (
@@ -310,30 +313,31 @@ function App() {
             isOpen={isInfoModalOpen}
             handleClose={() => setIsInfoModalOpen(false)}
           />
-          <StatsModal
-            isOpen={isStatsModalOpen}
-            handleClose={() => setIsStatsModalOpen(false)}
-            solution={solution}
-            guesses={guesses}
-            gameStats={stats}
-            isLatestGame={isLatestGame}
-            isGameLost={isGameLost}
-            isGameWon={isGameWon}
-            handleShareToClipboard={() => showSuccessAlert(GAME_COPIED_MESSAGE)}
-            handleShareFailure={() =>
-              showErrorAlert(SHARE_FAILURE_TEXT, {
-                durationMs: LONG_ALERT_TIME_MS,
-              })
-            }
-            handleMigrateStatsButton={() => {
-              setIsStatsModalOpen(false)
-              setIsMigrateStatsModalOpen(true)
-            }}
-            isHardMode={isHardMode}
-            isDarkMode={isDarkMode}
-            isHighContrastMode={isHighContrastMode}
-            numberOfGuessesMade={guesses.length}
-          />
+<StatsModal
+  isOpen={isStatsModalOpen} // Modal will only open manually
+  handleClose={() => setIsStatsModalOpen(false)}
+  solution={solution}
+  guesses={guesses}
+  gameStats={stats}
+  isLatestGame={isLatestGame}
+  isGameLost={isGameLost}
+  isGameWon={isGameWon}
+  handleShareToClipboard={() => showSuccessAlert(GAME_COPIED_MESSAGE)}
+  handleShareFailure={() =>
+    showErrorAlert(SHARE_FAILURE_TEXT, {
+      durationMs: LONG_ALERT_TIME_MS,
+    })
+  }
+  handleMigrateStatsButton={() => {
+    setIsStatsModalOpen(false);
+    setIsMigrateStatsModalOpen(true);
+  }}
+  isHardMode={isHardMode}
+  isDarkMode={isDarkMode}
+  isHighContrastMode={isHighContrastMode}
+  numberOfGuessesMade={guesses.length}
+/>
+
           <DatePickerModal
             isOpen={isDatePickerModalOpen}
             initialDate={solutionGameDate}
