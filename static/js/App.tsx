@@ -178,6 +178,7 @@ useEffect(() => {
         const newScore = score + 10;
         setScore(newScore);
         localStorage.setItem('score', newScore.toString());
+        console.log('Updated score:', newScore);  // Log the updated score
       },
     });
   }
@@ -189,6 +190,7 @@ useEffect(() => {
     });
   }
 }, [isGameWon, isGameLost, showSuccessAlert, showErrorAlert, score]);
+
 
 
   const onChar = (value: string) => {
