@@ -16,8 +16,7 @@ function addScore(points) {
     const currentScore = parseInt(localStorage.getItem('score') || '0');
     const newScore = currentScore + points;
     localStorage.setItem('score', newScore);
-    console.log('Score updated:', newScore);
-    renderUI(); // Update UI if necessary
+    renderUI();
 }
 
 document.addEventListener("DOMContentLoaded", function() {
