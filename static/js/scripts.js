@@ -13,13 +13,19 @@ function enableSignupBtn() {
     }
 }
 
-function addScore(points) {
-    const currentScore = parseInt(localStorage.getItem('score') || '0');
-    const newScore = currentScore + points;
-    localStorage.setItem('score', newScore);
-    renderUI();
+let score = parseInt(localStorage.getItem('score')) || 0;
+
+function addScore() {
+    const isGameWon = true; // Replace with your actual condition
+    if (isGameWon) {
+        score += 10; // Add 10 points for a win
+        localStorage.setItem('score', score);
+        console.log(`Score updated: ${score}`);
+    }
 }
 
+// Call addScore whenever the game state changes
+addScore();
 document.addEventListener("DOMContentLoaded", function() {
 
     let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
