@@ -16,8 +16,12 @@ function addScore(points) {
     const currentScore = parseInt(localStorage.getItem('score') || '0');
     const newScore = currentScore + points;
     localStorage.setItem('score', newScore);
-    renderUI();
+    console.log('Score updated:', newScore);
+    renderUI(); // Update UI if necessary
 }
+
+// Expose the function globally
+window.addScore = addScore;
 
 document.addEventListener("DOMContentLoaded", function() {
     let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
