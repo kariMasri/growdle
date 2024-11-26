@@ -170,7 +170,7 @@ useEffect(() => {
       WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)];
     const delayMs = REVEAL_TIME_MS * solution.length;
 
-    // Display success message
+    // Display success message and update score
     showSuccessAlert(winMessage, {
       delayMs,
       onClose: () => {
@@ -178,23 +178,18 @@ useEffect(() => {
         const newScore = score + 10;
         setScore(newScore);
         localStorage.setItem('score', newScore.toString());
-
-        // Prevent statistics modal from opening automatically
-        setIsStatsModalOpen(false);
-      },
-    });
-  } else if (isGameLost) {
-    showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
-      persist: false,
-      onClose: () => {
-        // Prevent statistics modal from opening automatically
-        setIsStatsModalOpen(false);
+        console.log('Updated score:', newScore);  // Log the updated score
       },
     });
   }
-}, [isGameWon, isGameLost, score, showSuccessAlert, showErrorAlert]);
 
-
+  if (isGameLost) {
+    showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
+      persist: true,
+      delayMs: REVEAL_TIME_MS * solution.length + 1,
+    });
+  }
+}, [isGameWon, isGameLost, showSuccessAlert, showErrorAlert, score]);
 
 
 
