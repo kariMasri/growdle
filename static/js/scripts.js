@@ -14,10 +14,8 @@ function enableSignupBtn() {
 
 function addScore(points) {
     const currentScore = parseInt(localStorage.getItem('score') || '0');
-    console.log("Current score: ", currentScore); // Log current score
     const newScore = currentScore + points;
-    console.log("New score after adding points: ", newScore); // Log updated score
-    localStorage.setItem('score', newScore); // Save new score to localStorage
+    localStorage.setItem('score', newScore);
 
     // Safely call renderUI
     if (typeof renderUI === "function") {
@@ -55,11 +53,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function renderUI() {
         console.log("Rendering UI...");
-
-        // Get updated score from localStorage
-        const score = localStorage.getItem('score') || 0;
-        console.log("Current score in renderUI: ", score); // Log the current score
-
         const loginButton = document.getElementById('loginBtn');
         const signUpButton = document.getElementById('signupBtn');
         const rightIcons = document.querySelector('.right-icons');
@@ -88,12 +81,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
             loginButton.onclick = openLoginModal;
             signUpButton.onclick = openSignUpModal;
-        }
-
-        // Update the score display (assuming you have an element to show it)
-        const scoreElement = document.getElementById('scoreDisplay');
-        if (scoreElement) {
-            scoreElement.textContent = score;
         }
     }
 
