@@ -20,9 +20,6 @@ function addScore(points) {
     renderUI(); // Update UI if necessary
 }
 
-// Expose the function globally
-window.addScore = addScore;
-
 document.addEventListener("DOMContentLoaded", function() {
     let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
