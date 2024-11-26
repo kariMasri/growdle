@@ -165,31 +165,28 @@ function App() {
   }, [guesses])
 
 useEffect(() => {
-  if (isGameWon) {
-    const winMessage =
-      WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)];
-    const delayMs = REVEAL_TIME_MS * solution.length;
+    if (isGameWon) {
+        const winMessage = WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)];
+        const delayMs = REVEAL_TIME_MS * solution.length;
 
-    // Display success message and update score
-    showSuccessAlert(winMessage, {
-      delayMs,
-      onClose: () => {
-        // Update score in state and localStorage
-        const newScore = score + 10;
-        setScore(newScore);
-        localStorage.setItem('score', newScore.toString());
-        console.log('Updated score:', newScore);  // Log the updated score
-      },
-    });
-  }
+        showSuccessAlert(winMessage, {
+            delayMs,
+            onClose: () => {
+                const newScore = score + 10;
+                setScore(newScore);
+                localStorage.setItem('score', newScore.toString());
+                console.log('Updated score:', newScore);
+            },
+        });
+    }
 
-  if (isGameLost) {
-    showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
-      persist: true,
-      delayMs: REVEAL_TIME_MS * solution.length + 1,
-    });
-  }
-}, [isGameWon, isGameLost, showSuccessAlert, showErrorAlert, score]);
+    if (isGameLost) {
+        showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
+            persist: true,
+            delayMs: REVEAL_TIME_MS * solution.length + 1,
+        });
+    }
+}, [isGameWon, isGameLost, score]);
 
 
 
