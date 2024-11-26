@@ -170,28 +170,30 @@ useEffect(() => {
       WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)];
     const delayMs = REVEAL_TIME_MS * solution.length;
 
-    // Display success message and update score
+    // Display success message
     showSuccessAlert(winMessage, {
       delayMs,
       onClose: () => {
         // Update score in state and localStorage
         const newScore = score + 10;
-        setScore(newScore); // This will update the score in the state
-        localStorage.setItem('score', newScore.toString()); // Update score in localStorage
+        setScore(newScore);
+        localStorage.setItem('score', newScore.toString());
 
-        // Log the updated score
-        console.log("Updated score: ", localStorage.getItem('score')); // Log score after update
+        // Prevent statistics modal from opening automatically
+        setIsStatsModalOpen(false);
+      },
+    });
+  } else if (isGameLost) {
+    showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
+      persist: false,
+      onClose: () => {
+        // Prevent statistics modal from opening automatically
+        setIsStatsModalOpen(false);
       },
     });
   }
+}, [isGameWon, isGameLost, score, showSuccessAlert, showErrorAlert]);
 
-  if (isGameLost) {
-    showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
-      persist: true,
-      delayMs: REVEAL_TIME_MS * solution.length + 1,
-    });
-  }
-}, [isGameWon, isGameLost, showSuccessAlert, showErrorAlert, score]);
 
 
 
