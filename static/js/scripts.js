@@ -34,19 +34,20 @@ window.addScore = addScore;
 document.addEventListener("DOMContentLoaded", function() {
     let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
-    function showMessage(message, type) {
-        const messageBox = document.createElement('div');
-        messageBox.className = message-box ${type};
-        messageBox.textContent = message;
-        document.body.appendChild(messageBox);
+   function showMessage(message, type) {
+    const messageBox = document.createElement('div');
+    messageBox.className = `message-box ${type}`; // Fixed template literal
+    messageBox.textContent = message;
+    document.body.appendChild(messageBox);
 
+    setTimeout(function() {
+        messageBox.classList.add('fade-out');
         setTimeout(function() {
-            messageBox.classList.add('fade-out');
-            setTimeout(function() {
-                document.body.removeChild(messageBox);
-            }, 1000);
-        }, 3000);
-    }
+            document.body.removeChild(messageBox);
+        }, 1000);
+    }, 3000);
+}
+
 
     function getStoredUsers() {
         const users = localStorage.getItem('users');
