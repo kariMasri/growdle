@@ -179,6 +179,7 @@ function App() {
         delayMs,
         onClose: () => setIsStatsModalOpen(true),
       })
+        window.addScore(10);
     }
 
     if (isGameLost) {
