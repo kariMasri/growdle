@@ -206,17 +206,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const score = localStorage.getItem('score') || 0;
 
-        modalContent.innerHTML = 
-            <span class="close">&times;</span>
-            <div class="profile-picture-large" style="background-image: url('profile.jfif');"></div>
-            <p class="username">${localStorage.getItem('loggedInUser')}</p>
-            <p class="score" style="position: relative;">
-                <img src="static/media/wl.png" alt="Score Icon" class="score-icon">
-                <span class="score-number">${score}</span>
-            </p>
-            <button class="reset-password-btn">Reset Password</button>
-            <button class="logout-btn">Logout</button>
-        ;
+modalContent.innerHTML = `
+    <span class="close">&times;</span>
+    <div class="profile-picture-large" style="background-image: url('profile.jfif');"></div>
+    <p class="username">${localStorage.getItem('loggedInUser')}</p>
+    <p class="score" style="position: relative;">
+        <img src="static/media/wl.png" alt="Score Icon" class="score-icon">
+        <span class="score-number">${score}</span>
+    </p>
+    <button class="reset-password-btn">Reset Password</button>
+    <button class="logout-btn">Logout</button>
+`;
+
 
         modal.appendChild(modalContent);
         document.body.appendChild(modal);
