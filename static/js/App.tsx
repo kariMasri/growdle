@@ -1,9 +1,11 @@
- import './App.css'
+import './App.css'
+
 import { ClockIcon } from '@heroicons/react/outline'
 import { format } from 'date-fns'
 import { default as GraphemeSplitter } from 'grapheme-splitter'
 import { useEffect, useState } from 'react'
 import Div100vh from 'react-div-100vh'
+
 import { AlertContainer } from './components/alerts/AlertContainer'
 import { Grid } from './components/grid/Grid'
 import { Keyboard } from './components/keyboard/Keyboard'
@@ -55,9 +57,12 @@ import {
 function App() {
   const isLatestGame = getIsLatestGame()
   const gameDate = getGameDate()
-  const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  const prefersDarkMode = window.matchMedia(
+    '(prefers-color-scheme: dark)'
+  ).matches
 
-  const { showError: showErrorAlert, showSuccess: showSuccessAlert } = useAlert()
+  const { showError: showErrorAlert, showSuccess: showSuccessAlert } =
+    useAlert()
   const [currentGuess, setCurrentGuess] = useState('')
   const [isGameWon, setIsGameWon] = useState(false)
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false)
@@ -74,7 +79,9 @@ function App() {
       ? true
       : false
   )
-  const [isHighContrastMode, setIsHighContrastMode] = useState(getStoredIsHighContrastMode())
+  const [isHighContrastMode, setIsHighContrastMode] = useState(
+    getStoredIsHighContrastMode()
+  )
   const [isRevealing, setIsRevealing] = useState(false)
   const [guesses, setGuesses] = useState<string[]>(() => {
     const loaded = loadGameStateFromLocalStorage(isLatestGame)
@@ -95,10 +102,6 @@ function App() {
   })
 
   const [stats, setStats] = useState(() => loadStats())
-  const [score, setScore] = useState<number>(() => {
-    const storedScore = localStorage.getItem('score')
-    return storedScore ? parseInt(storedScore) : 0
-  })
 
   const [isHardMode, setIsHardMode] = useState(
     localStorage.getItem('gameMode')
@@ -107,12 +110,14 @@ function App() {
   )
 
   useEffect(() => {
+    // if no game state on load,
+    // show the user the how-to info modal
     if (!loadGameStateFromLocalStorage(true)) {
       setTimeout(() => {
         setIsInfoModalOpen(true)
       }, WELCOME_INFO_MODAL_MS)
     }
-  }, [])
+  })
 
   useEffect(() => {
     DISCOURAGE_INAPP_BROWSERS &&
@@ -164,42 +169,32 @@ function App() {
     saveGameStateToLocalStorage(getIsLatestGame(), { guesses, solution })
   }, [guesses])
 
-useEffect(() => {
-  if (isGameWon) {
-    const winMessage =
-      WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)];
-    const delayMs = REVEAL_TIME_MS * solution.length;
+  useEffect(() => {
+    if (isGameWon) {
+      const winMessage =
+        WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
+      const delayMs = REVEAL_TIME_MS * solution.length
 
-    // Display success message and update score
-    showSuccessAlert(winMessage, {
-      delayMs,
-      onClose: () => {
-        // Update score in state and localStorage
-        const newScore = score + 10;
-        setScore(newScore);
-        localStorage.setItem('score', newScore.toString());
-        console.log('Updated score:', newScore);  // Log the updated score
-      },
-    });
-  }
+      showSuccessAlert(winMessage, {
+        delayMs,
+        onClose: () =>  window.addScore(10),
+      })
+    }
 
-  if (isGameLost) {
-    showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
-      persist: true,
-      delayMs: REVEAL_TIME_MS * solution.length + 1,
-    });
-  }
-}, [isGameWon, isGameLost, showSuccessAlert, showErrorAlert, score]);
-
-
+    if (isGameLost) {
+      setTimeout(() => {
+        setIsStatsModalOpen(true)
+      }, (solution.length + 1) * REVEAL_TIME_MS)
+    }
+  }, [isGameWon, isGameLost, showSuccessAlert])
 
   const onChar = (value: string) => {
     if (
-      unicodeLength(${currentGuess}${value}) <= solution.length &&
+      unicodeLength(`${currentGuess}${value}`) <= solution.length &&
       guesses.length < MAX_CHALLENGES &&
       !isGameWon
     ) {
-      setCurrentGuess(${currentGuess}${value})
+      setCurrentGuess(`${currentGuess}${value}`)
     }
   }
 
@@ -240,6 +235,8 @@ useEffect(() => {
     }
 
     setIsRevealing(true)
+    // turn this back off after all
+    // chars have been revealed
     setTimeout(() => {
       setIsRevealing(false)
     }, REVEAL_TIME_MS * solution.length)
@@ -315,31 +312,30 @@ useEffect(() => {
             isOpen={isInfoModalOpen}
             handleClose={() => setIsInfoModalOpen(false)}
           />
-<StatsModal
-  isOpen={isStatsModalOpen} // Modal will only open manually
-  handleClose={() => setIsStatsModalOpen(false)}
-  solution={solution}
-  guesses={guesses}
-  gameStats={stats}
-  isLatestGame={isLatestGame}
-  isGameLost={isGameLost}
-  isGameWon={isGameWon}
-  handleShareToClipboard={() => showSuccessAlert(GAME_COPIED_MESSAGE)}
-  handleShareFailure={() =>
-    showErrorAlert(SHARE_FAILURE_TEXT, {
-      durationMs: LONG_ALERT_TIME_MS,
-    })
-  }
-  handleMigrateStatsButton={() => {
-    setIsStatsModalOpen(false);
-    setIsMigrateStatsModalOpen(true);
-  }}
-  isHardMode={isHardMode}
-  isDarkMode={isDarkMode}
-  isHighContrastMode={isHighContrastMode}
-  numberOfGuessesMade={guesses.length}
-/>
-
+          <StatsModal
+            isOpen={isStatsModalOpen}
+            handleClose={() => setIsStatsModalOpen(false)}
+            solution={solution}
+            guesses={guesses}
+            gameStats={stats}
+            isLatestGame={isLatestGame}
+            isGameLost={isGameLost}
+            isGameWon={isGameWon}
+            handleShareToClipboard={() => showSuccessAlert(GAME_COPIED_MESSAGE)}
+            handleShareFailure={() =>
+              showErrorAlert(SHARE_FAILURE_TEXT, {
+                durationMs: LONG_ALERT_TIME_MS,
+              })
+            }
+            handleMigrateStatsButton={() => {
+              setIsStatsModalOpen(false)
+              setIsMigrateStatsModalOpen(true)
+            }}
+            isHardMode={isHardMode}
+            isDarkMode={isDarkMode}
+            isHighContrastMode={isHighContrastMode}
+            numberOfGuessesMade={guesses.length}
+          />
           <DatePickerModal
             isOpen={isDatePickerModalOpen}
             initialDate={solutionGameDate}
@@ -364,7 +360,6 @@ useEffect(() => {
             handleHighContrastMode={handleHighContrastMode}
           />
           <AlertContainer />
-          <p>Your Score: {score}</p> {/* Display the score */}
         </div>
       </div>
     </Div100vh>
