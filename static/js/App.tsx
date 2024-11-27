@@ -169,24 +169,27 @@ function App() {
     saveGameStateToLocalStorage(getIsLatestGame(), { guesses, solution })
   }, [guesses])
 
-  useEffect(() => {
+ useEffect(() => {
     if (isGameWon) {
       const winMessage =
-        WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
-      const delayMs = REVEAL_TIME_MS * solution.length
+        WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)];
+      const delayMs = REVEAL_TIME_MS * solution.length;
 
+      // Show success alert and add 10 points when the game is won
       showSuccessAlert(winMessage, {
         delayMs,
-        onClose: () =>  window.addScore(10),
-      })
+        onClose: () => {
+          window.addScore(10); // Adds 10 points to the score when the game is won
+        },
+      });
     }
 
     if (isGameLost) {
       setTimeout(() => {
-        setIsStatsModalOpen(true)
-      }, (solution.length + 1) * REVEAL_TIME_MS)
+        setIsStatsModalOpen(true);
+      }, (solution.length + 1) * REVEAL_TIME_MS);
     }
-  }, [isGameWon, isGameLost, showSuccessAlert])
+  }, [isGameWon, isGameLost, showSuccessAlert, solution.length]);
 
   const onChar = (value: string) => {
     if (
