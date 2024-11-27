@@ -28,9 +28,11 @@ function addScore(points) {
     }
 }
 
-
 // Attach the function to the window object
 window.addScore = addScore;
+
+// Rest of your existing code...
+
 
 
 document.addEventListener("DOMContentLoaded", function() {
