@@ -15,17 +15,19 @@ function enableSignupBtn() {
 function addScore(points) {
     const loggedInUser = localStorage.getItem('loggedInUser');
     if (loggedInUser) {
-        let users = getStoredUsers(); // Retrieve users from localStorage
+        let users = getStoredUsers();
         let user = users.find(user => user.username === loggedInUser);
 
         if (user) {
-            user.score = (user.score || 0) + points; // Increment the score
-            saveUsers(users); // Save updated users back to localStorage
-            localStorage.setItem('score', user.score); // Update the score in localStorage
+            user.score = (user.score || 0) + points;
+            saveUsers(users);
+            localStorage.setItem('score', user.score);
             console.log(`New score for ${loggedInUser}: ${user.score}`);
+            renderUI(); // Refresh UI with updated score
         }
     }
 }
+
 
 // Attach the function to the window object
 window.addScore = addScore;
